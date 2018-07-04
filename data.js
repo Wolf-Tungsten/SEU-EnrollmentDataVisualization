@@ -31,16 +31,39 @@ const schema = {
   }
 // 模型定义的所有字段和数据表格同步
 const enrollment = sequelize.define('enrollment', schema)
+enrollment.sync()
 const loadData = () => {
     dialog.showOpenDialog({
         title: '选择数据xlsx文件',
         filters: ['xlsx'],
         properties: ['openFile']
-    }, (filePath) => {
+    }, async (filePath) => {
         if (filePath) {
+            // 删除数据库原有数据
+            console.log('正在清扫原始数据')
+            await enrollment.destroy({where:{}})
             new Promise((resolve, reject) => {
-                let srcData = xlsx.parse(filePath)
-                console.log(srcData)
+                let srcData = xlsx.parse(filePath[0])
+                let count = 0
+                for (let table of srcData) {
+                    try{
+                        let tableHeader = table.data[0]
+                        for (let row of table.data) {
+                            let newItem = {}
+                            if (row[0] === tableHeader[0]) { continue } //略过表头
+                            for (let col in row) {
+                                if (schema[tableHeader[col]]) {
+                                    newItem[tableHeader[col]] = row[col]
+                                }
+                            }
+                            enrollment.create(newItem)
+                            count++
+                        }
+                    } catch(e) {
+                        console.log(e)
+                    }
+                }
+                console.log(`本次加载共${count}条`)
             })
         }
     })

@@ -32,7 +32,7 @@ function onReady() {
   // 主进程入口
   createWindow()
   globalShortcut.register('CommandOrControl+Alt+I', () => {
-    // Do stuff when Y and either Command/Control is pressed.
+    loadData()
   })
 }
 // This method will be called when Electron has finished

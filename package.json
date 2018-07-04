@@ -6,7 +6,7 @@
   "scripts": {
     "start": "electron .",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "electron-builder install-app-deps"
+    "postinstall": "./node_modules/.bin/electron-rebuild -w sqlite3 -p"
   },
   "repository": {
     "type": "git",

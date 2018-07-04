@@ -27,7 +27,7 @@ const schema = {
     zydm: Sequelize.STRING, // 专业代码
     zymc: Sequelize.STRING, // 专业名称
     yxdm: Sequelize.STRING, // 院系代码
-    yxmc: sequelize.STRING // 院系名称
+    yxmc: Sequelize.STRING // 院系名称
   }
 // 模型定义的所有字段和数据表格同步
 const enrollment = sequelize.define('enrollment', schema)

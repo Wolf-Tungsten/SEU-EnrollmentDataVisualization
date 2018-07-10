@@ -1,0 +1,6 @@
+body {
+    width: 5760px;
+    height: 2160px;
+    background-image: url('../assets/background.png');
+    transform: scale(0.25,0.25)
+}

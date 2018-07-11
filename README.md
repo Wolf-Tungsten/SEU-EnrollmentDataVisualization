@@ -5,3 +5,7 @@
 
 * http://www.echartsjs.com/gallery/editor.html?c=pie-custom
 * http://echarts.baidu.com/examples/editor.html?c=bar-brush
+
+## 页面内设置参数的方法列表
+
+`window.setFinishCount( number )` 设置屏幕右上角完成总人数

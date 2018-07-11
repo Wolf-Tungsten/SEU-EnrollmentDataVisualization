@@ -17,8 +17,42 @@
     </script>
     <link rel="stylesheet" href="css/index.css" type="text/css"/>
   </head>
-  <body>
-      <div id="main" style="width:100%; height: 584px;"></div>
+  <body style="margin:0">
+      <div class="container" style="width: 1920px; height: 720px; transform: scaleY(1); transform-origin: 0 0 ; overflow: hidden;">
+          <div id="up">
+            <div id="time-container">
+                <span class="label-background text" style="margin-right:20px;">当前时间</span>
+                <span id="current-time" class="dashboard-text" style="width: 391px;">2018-00-00 00:30:23</span>
+                <script>
+                    setInterval(()=>{
+                        let now = new Date()
+                        $('#current-time').text(`${now.getFullYear()}-${now.getMonth()+1 < 10 ? '0'+ (now.getMonth() + 1) : now.getMonth() + 1}-${now.getDate() < 10 ? '0'+ now.getDate(): now.getDate()} 
+                        ${now.getHours() < 10 ? '0'+ now.getHours() : now.getHours()}:${now.getMinutes() < 10 ? '0'+ now.getMinutes() : now.getMinutes()}:${now.getSeconds() < 10 ? '0' + now.getSeconds() : now.getSeconds()}`)
+                    }, 1000)
+                </script>
+            </div>
+            <div id="spare"></div>
+            <div id="amount-container">
+                <span class="label-background text" style="margin-right:15px;">总计划</span>
+                <span class="dashboard-text" style="margin-right:30px; width: 4ch">3456</span>
+                <span class="label-background text" style="margin-right:15px;">已录取</span>
+                <span id='finish-count' class="dashboard-text" style="width: 4ch">0000</span>
+                <script>
+                    window.setFinishCount = (count) => {
+                        $('#finish-count').text(count)
+                    }
+                    setFinishCount(1100)
+                </script>
+            </div>
+          </div>
+          <div id="middle">
+
+          </div>
+          <div id="bottom">
+
+          </div>
+      </div>
+      
       <script>
         option = {
         title: {

@@ -24,6 +24,7 @@
     "electron-rebuild": "^1.8.1"
   },
   "dependencies": {
+    "electron-reload": "^1.2.5",
     "node-xlsx": "^0.12.1",
     "sequelize": "^4.38.0",
     "sqlite3": "^4.0.1"

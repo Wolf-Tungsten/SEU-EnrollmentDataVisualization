@@ -4,10 +4,10 @@ const {loadData} = require('./data')
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
-
+require('electron-reload')(__dirname);
 function createWindow () {
   // Create the browser window.
-  mainWindow = new BrowserWindow({width: 720, height: 405, x:20, y:20, enableLargerThanScreen:true})
+  mainWindow = new BrowserWindow({ frame: false ,width: 1920, height: 720, x:20, y:20, enableLargerThanScreen:true})
 
   // and load the index.html of the app.
   mainWindow.loadFile('./render/index.html')

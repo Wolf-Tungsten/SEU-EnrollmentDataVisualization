@@ -1,6 +1,5 @@
 // Modules to control application life and create native browser window
 const {app, BrowserWindow, globalShortcut} = require('electron')
-const {loadData} = require('./data')
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
@@ -32,7 +31,7 @@ function onReady() {
   // 主进程入口
   createWindow()
   globalShortcut.register('CommandOrControl+Alt+I', () => {
-    loadData()
+    
   })
 }
 // This method will be called when Electron has finished

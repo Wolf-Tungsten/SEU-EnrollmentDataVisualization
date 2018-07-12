@@ -11,6 +11,7 @@
 .container {
     background-image: url("background.png");
     background-size: 1920px 720px;
+    -webkit-app-region: drag;
 }
 
 #time-container {

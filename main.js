@@ -7,20 +7,20 @@ let mainWindow
 require('electron-reload')(__dirname);
 function createWindow () {
   // Create the browser window.
-  mainWindow = new BrowserWindow({ frame: false ,width: 1920, height: 720, x:20, y:20, enableLargerThanScreen:true})
-
+  displayWindow = new BrowserWindow({ frame: false ,width: 1920, height: 1080, x:0, y:0, enableLargerThanScreen:true})
+  monitorWindow = new BrowserWindow({ frame: true ,width: 1920, height: 720, x:20, y:20, enableLargerThanScreen:true})
   // and load the index.html of the app.
-  mainWindow.loadFile('./render/index.html')
+  displayWindow.loadFile('./render/index.html')
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools()
+  displayWindow.webContents.openDevTools()
 
   // Emitted when the window is closed.
-  mainWindow.on('closed', function () {
+  displayWindow.on('closed', function () {
     // Dereference the window object, usually you would store windows
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
-    mainWindow = null
+    displayWindow = null
   })
 }
 

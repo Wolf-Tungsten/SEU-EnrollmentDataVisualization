@@ -1,17 +1,19 @@
-// Modules to control application life and create native browser window
 const {app, BrowserWindow, globalShortcut, ipcMain, Menu} = require('electron')
 const {loadData} = require('./data')
-// Keep a global reference of the window object, if you don't, the window will
-// be closed automatically when the JavaScript object is garbage collected.
+const ssmcList = require('./predefined-data/ssmc.json').ssmc
+const zymcList = Object.keys(require('./predefined-data/zymc2zydm.json'))
+const drlbmcList = Object.keys(require('./predefined-data/drlbmc2drlbdm.json'))
+
+app.setName("招生录取数据可视化")
 let mainWindow
 let displayWindow
 let ipc
-require('electron-reload')(__dirname);
+//require('electron-reload')(__dirname);
 
 function createWindow () {
   // Create the browser window.
   displayWindow = new BrowserWindow({ resizable:false, frame: false ,width: 1920, height: 1080, x:0, y:0, enableLargerThanScreen:true})
-  monitorWindow = new BrowserWindow({ title:'招生录取数据可视化', resizable:false, frame: true ,width:965,  height:400 , x:20, y:20, enableLargerThanScreen:true})
+  monitorWindow = new BrowserWindow({ title:'招生录取数据可视化', resizable:false, frame: true ,width:960,  minHeight:370, height:370,useContentSize:true , x:20, y:20, enableLargerThanScreen:true})
   // and load the index.html of the app.
   displayWindow.loadFile('./render/index.html')
   monitorWindow.loadFile('./render/index.html')
@@ -49,7 +51,60 @@ function createWindow () {
 }
 
 function createMenu() {
-    let menu = new menu()
+
+  let submenu1 = [{label:'全国|全专业' ,role: '全国|全专业'},{type: 'separator'}]
+  ssmcList.forEach(element => {
+    submenu1.push({
+      label:element,
+      role:element
+    })
+  })
+  submenu1.push({type: 'separator'})
+  zymcList.forEach(element => {
+    console.log(element)
+    submenu1.push({
+      label:element,
+      role:element
+    })
+  })
+
+  console.log(submenu1)
+
+  let submenu2 = []
+  drlbmcList.forEach(element => {
+    submenu2.push({
+      label:element,
+      role:element
+    })
+  })
+
+  const template = [
+    {
+      label: '环状图切片',
+      submenu: submenu1
+    },
+    {
+      label: '地图导入类别',
+      submenu: submenu2
+    },
+    {
+      label: '双向柱状图',
+      submenu: [
+        {
+          label: '省市视图',
+          role: '省市视图'
+        },
+        {
+          label: '专业视图',
+          role: '专业视图'
+        }
+      ]
+    }
+  ]
+
+  const menu = Menu.buildFromTemplate(template)
+  monitorWindow.setMenu(menu)
+
 
 }
 
@@ -64,6 +119,8 @@ function onReady() {
   createWindow()
   // 设置监听器
   setListener()
+  // 设置菜单
+  createMenu()
 }
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.

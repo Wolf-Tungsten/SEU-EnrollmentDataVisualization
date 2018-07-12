@@ -11,8 +11,9 @@
 
 ::-webkit-scrollbar  
 {  
-    width: 0;  
-    height: 0;  
+    width: 0px;  
+    height: 0px;  
+    color: rgba(0,0,0,0)
 }  
 
 .container {
@@ -35,7 +36,7 @@
     background: rgba(52, 141, 190, 0.49);
     border-radius: 5px;
     padding: 5px 10px 5px 10px;
-    -webkit-app-region: drag;
+    
 }
 
 .text {
@@ -72,6 +73,7 @@
 #up #spare {
     width: 810px;
     height: 95px;
+    -webkit-app-region: drag;
 }
 
 #bottom {

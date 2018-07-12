@@ -28,7 +28,7 @@ window.setRightAsProcess = (data) => {
       }
     },
     tooltip: {},
-    color: ['#2F80ED', '#2D9CDB', '#56CCF2', '#FFD600'],
+    color: ['#2F80ED', '#2D9CDB', '#56CCF2', '#FFD600', '#FFFFFF'],
     backgroundColor: 'rgba(0,0,0,0)',
     xAxis: [{
       data: ssmcList,

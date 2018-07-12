@@ -54,11 +54,11 @@
             <div id="middle"  style="height: 590px; width:615px; margin: 0 10px 0 10px">
                 <div class="chart-background" style="height: 590px; width:615px;" id="map-container"></div>
             </div>
-            <div id="right" class="chart-background" style="height: 590px; width:1005px">
+            <div id="right" class="chart-background" style="opacity:0; height: 590px; width:1005px">
                 <div style="height: 590px; width:1005px;" id="right-container"></div>
             </div>
           </div>
-          <div style="position:fixed; left:300px; top:580px;">
+          <div id="map-legend" style="position:fixed; left:300px; top:580px;">
               <div>
                   <div class="legend">
                     <div style="width:40px; height:30px; background-color: rgba(255, 255, 255, 0.2); border-radius: 3px;"></div><span>无计划</span>
@@ -71,8 +71,22 @@
                     </div>
                 </div>
           </div>
+
+        <div id="middle-right" class="chart-background" style="position:fixed; left:275px; top:105px; height: 590px; width:1630px">
+            <div style="height: 590px; width:1005px;" id="middle-right-container"></div>
+        </div>
       </div>
   </body>
+<script>
+    window.toggleBottom = (middleRight) => {
+        ['#right', '#middle', '#map-legend'].forEach(element => {
+            $(element).css('opacity', middleRight ? '0' : '1')
+        })
+        $('#middle-right').css('opacity', middleRight ? '1' : '0')
+    }
+
+    toggleBottom(true)
+</script>
 <script src="js/pie.js"></script>
 <script src="js/map.js"></script>
 <script src="js/right.js"></script>

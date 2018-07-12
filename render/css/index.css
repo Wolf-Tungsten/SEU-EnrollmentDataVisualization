@@ -65,3 +65,16 @@
     height: 95px;
 }
 
+#bottom {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.chart-background{
+
+background: linear-gradient(180deg, rgba(0, 198, 255, 0.39) 0%, rgba(196, 196, 196, 0) 100%);
+border-top: 5px solid #F2C94C;
+
+}
+

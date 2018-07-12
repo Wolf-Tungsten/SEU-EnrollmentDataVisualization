@@ -7,3 +7,4 @@ ipcRenderer.on('set-scale', (_, message) => {
     $('html').css('transform', `scale(${scale.x}, ${scale.y})`)
     $('html').css('transform-origin','0 0')
 } )
+

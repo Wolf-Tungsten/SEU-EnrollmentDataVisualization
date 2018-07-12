@@ -1,5 +1,5 @@
 // Modules to control application life and create native browser window
-const {app, BrowserWindow, globalShortcut, ipcMain} = require('electron')
+const {app, BrowserWindow, globalShortcut, ipcMain, Menu} = require('electron')
 const {loadData} = require('./data')
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -49,6 +49,7 @@ function createWindow () {
 }
 
 function createMenu() {
+    let menu = new menu()
 
 }
 

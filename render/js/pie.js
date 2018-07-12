@@ -29,7 +29,7 @@ const pie1 = echarts.init(document.getElementById('pie-1'))
 const pie2 = echarts.init(document.getElementById('pie-2'))
 const pie3 = echarts.init(document.getElementById('pie-3'))
 
-let setPie1 = (province, male, female) => {
+window.setPie1 = (province, male, female) => {
 
   let serial = [
     { value: male, name: '男', itemStyle: {color:'#EB5757'}},
@@ -44,7 +44,7 @@ let setPie1 = (province, male, female) => {
       left: 'center',
       top: 15,
       textStyle: {
-        color: '#ccc'
+        color: '#f9f9f9'
       }
     },
 
@@ -56,10 +56,10 @@ let setPie1 = (province, male, female) => {
       {
         name: '性别比例',
         type: 'pie',
-        radius: '60%',
+        radius: ['40%', '60%'],
         center: ['50%', '60%'],
         data: serial.sort(function (a, b) { return a.value - b.value; }),
-        roseType: 'radius',
+        //roseType: 'radius',
         label: {
           normal: {
             textStyle: {

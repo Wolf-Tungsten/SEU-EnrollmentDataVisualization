@@ -52,5 +52,12 @@ for (let row of srcData[0].data) {
     ssjhs[ssmc].amount = sum
   })
 
-fs.writeFileSync(`${process.cwd()}/tools/ssjhs.json`, JSON.stringify(ssjhs))
-fs.writeFileSync(`${process.cwd()}/tools/zyjhs.json`, JSON.stringify(zyjhs))
+//fs.writeFileSync(`${process.cwd()}/tools/ssjhs.json`, JSON.stringify(ssjhs))
+//fs.writeFileSync(`${process.cwd()}/tools/zyjhs.json`, JSON.stringify(zyjhs))
+
+let ssmcList = []
+for (let i = 2; i < tableHeader.length; i++) {
+  ssmcList.push(tableHeader[i])
+}
+
+fs.writeFileSync(`${process.cwd()}/tools/ssmcList.json`, JSON.stringify(ssmcList))

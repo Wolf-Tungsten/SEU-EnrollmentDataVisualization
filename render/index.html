@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="css/index.css" type="text/css"/>
   </head>
   <body style="margin:0">
-      <div class="container" style="width: 1920px; height: 720px; transform: scaleY(1); transform-origin: 0 0 ; overflow: hidden;">
+      <div class="container" style="width: 1920px; height: 720px; transform: scaleY(1.); transform-origin: 0 0 ; overflow: hidden;">
           <div id="up">
             <div id="time-container">
                 <span class="label-background text" style="margin-right:20px;">当前时间</span>
@@ -51,10 +51,12 @@
                 <div id="pie-2" style=" width:100%; height:196px"></div>
                 <div id="pie-3" style=" width:100%; height:197px"></div>
             </div>
-            <div id="middle"  style="height: 590px; width:815px; margin: 0 10px 0 10px">
-                <div class="chart-background" style="height: 590px; width:815px;" id="map-container"></div>
+            <div id="middle"  style="height: 590px; width:615px; margin: 0 10px 0 10px">
+                <div class="chart-background" style="height: 590px; width:615px;" id="map-container"></div>
             </div>
-            <div id="right" class="chart-background" style="height: 590px; flex-grow: 3"></div>
+            <div id="right" class="chart-background" style="height: 590px; width:1005px">
+                <div style="height: 590px; width:1005px;" id="right-container"></div>
+            </div>
           </div>
           <div style="position:fixed; left:300px; top:580px;">
               <div>
@@ -73,4 +75,5 @@
   </body>
 <script src="js/pie.js"></script>
 <script src="js/map.js"></script>
+<script src="js/right.js"></script>
 </html>

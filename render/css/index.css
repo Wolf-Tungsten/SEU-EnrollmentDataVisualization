@@ -8,6 +8,11 @@
     src: url('SourceHanSansCN-Bold.otf');
 }
 
+@font-face {
+    font-family: NotoSansSC-Regular;
+    src: url('SourceHanSansCN-Regular.otf');
+}
+
 .container {
     background-image: url("background.png");
     background-size: 1920px 720px;

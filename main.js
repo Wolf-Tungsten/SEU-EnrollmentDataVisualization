@@ -7,13 +7,22 @@ let mainWindow
 require('electron-reload')(__dirname);
 function createWindow () {
   // Create the browser window.
-  displayWindow = new BrowserWindow({ frame: false ,width: 1920, height: 1080, x:0, y:0, enableLargerThanScreen:true})
-  monitorWindow = new BrowserWindow({ frame: true ,width: 1920, height: 720, x:20, y:20, enableLargerThanScreen:true})
+  displayWindow = new BrowserWindow({ resizable:false, frame: false ,width: 1920, height: 1080, x:0, y:0, enableLargerThanScreen:true})
+  monitorWindow = new BrowserWindow({ resizable:false, frame: true ,width:965,  height:400 , x:20, y:20, enableLargerThanScreen:true})
   // and load the index.html of the app.
   displayWindow.loadFile('./render/index.html')
+  monitorWindow.loadFile('./render/index.html')
 
+  displayWindow.webContents.on('did-finish-load', () => {
+    displayWindow.webContents.send('set-scale', {x:1, y:1.5})
+  })
+
+  monitorWindow.webContents.on('did-finish-load', () => {
+    monitorWindow.webContents.send('set-scale', {x:0.5, y:0.5})
+  })
+  
   // Open the DevTools.
-  displayWindow.webContents.openDevTools()
+  monitorWindow.webContents.openDevTools()
 
   // Emitted when the window is closed.
   displayWindow.on('closed', function () {

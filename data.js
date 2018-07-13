@@ -42,9 +42,10 @@ const loadData = async (path, ipc) => {
     // 开始初始数据渲染
     ipc('set-amount', {amount:srcData.length})
     setPie('qg', '全国', ipc)
-    await setMap('理', ipc)
-    //setProvinceBar(ipc)
-    setZYBar(ipc)
+    await setZYBar(ipc)
+    setMap('理', ipc)
+    setProvinceBar(ipc)
+    
 }
 
 const setPie = async (type, key, ipc) => {

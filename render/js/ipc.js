@@ -32,3 +32,8 @@ ipcRenderer.on('set-zy-bar', (_, message)=>{
     setZYBar(message.finished, message.unfinished)
     toggleBottom (true)
 })
+
+ipcRenderer.on('set-history', (_, message) => {
+    setHistory(message.ssmc, message.ws, message.lg)
+    toggleBottom (false)
+})

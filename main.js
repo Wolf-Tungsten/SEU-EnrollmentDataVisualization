@@ -14,14 +14,14 @@ require('electron-reload')(__dirname);
 
 function createWindow () {
   // Create the browser window.
-  displayWindow = new BrowserWindow({ resizable:false, frame: false ,width: 1920, height: 1080, x:0, y:0, enableLargerThanScreen:true})
+  displayWindow = new BrowserWindow({ resizable:false, frame: false ,width: 1920, height: 720, x:0, y:0, enableLargerThanScreen:true})
   monitorWindow = new BrowserWindow({ title:'招生录取数据可视化', resizable:false, frame: true ,width:960,  minHeight:370, height:370,useContentSize:true , x:20, y:20, enableLargerThanScreen:true})
   // and load the index.html of the app.
   displayWindow.loadFile('./render/index.html')
   monitorWindow.loadFile('./render/index.html')
 
   displayWindow.webContents.on('did-finish-load', () => {
-    displayWindow.webContents.send('set-scale', {x:1, y:1.5})
+    displayWindow.webContents.send('set-scale', {x:1, y:1})
   })
 
   monitorWindow.webContents.on('did-finish-load', () => {

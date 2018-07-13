@@ -136,6 +136,137 @@ window.setProvinceBar = (finished, unfinished) => {
 
 }
 
-window.setRightAsHistory = (data) => {
+window.setHistory = (ssmc, ws, lg) => {
 
+let option = {
+  title: {
+    text: `${ssmc}近年(2014-2018)录取线变化`,
+    left: 'center',
+    top: 15,
+    textStyle: {
+      color: '#f9f9f9'
+    }
+  },
+  grid: {
+    left: 100,
+    top: 100
+  },
+  tooltip: {
+      trigger: 'axis'
+  },
+  legend: {
+      data:['文史类','理工类'],
+      top: 50,
+      textStyle:{
+        color:'#F0f0f0',
+        fontSize:18
+      },
+      itemWidth:20,
+      itemHeight:20
+  },
+  xAxis:  {
+      type: 'category',
+      boundaryGap: false,
+      data: ['2014','2015','2016','2017','2018'],
+      axisLine: {
+        lineStyle:{
+          color:'#F9F9F9',
+          width:2,
+          shadowColor: 'rgba(255, 255, 255, 0.5)',
+          shadowBlur: 10,
+        }
+      },
+      axisLabel: {
+    
+        fontSize: 18
+    },
+  },
+  yAxis: {
+      type: 'value',
+      axisLabel: {
+          formatter: '{value}',
+          fontSize: 18
+      },
+      scale:true,
+      axisLine: {
+        lineStyle:{
+          color:'#F9F9F9',
+          width:2,
+          shadowColor: 'rgba(255, 255, 255, 0.5)',
+          shadowBlur: 10,
+        }
+      }
+  },
+  series: [
+      {
+          name:'文史类',
+          type:'line',
+          connectNulls: true,
+          data:ws,
+          smooth: true,
+          symbolSize:10,
+          label:{
+            position: [20, -20],
+            show: true,
+            color: '#FFF',
+            fontSize:20,
+            textShadowColor: 'rgba(255, 255, 255, 0.5)',
+            textShadowBlur: 10,
+            distance: 15
+          },
+          lineStyle:{
+            color:'#F2C94C',
+            width:3,
+            shadowColor: 'rgba(255, 255, 255, 0.5)',
+            shadowBlur: 10,
+          },
+          areaStyle: {
+            normal: {
+                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                    offset: 0.2,
+                    color: '#F2C94C'
+                }, {
+                    offset: 1,
+                    color: 'rgba(0,0,0,0)'
+                }])
+            }
+        },
+      },{
+        name:'理工类',
+        type:'line',
+        connectNulls: true,
+        data:lg,
+        smooth: true,
+        symbolSize:10,
+        label:{
+          position: [20, -20],
+          show: true,
+          color: '#FFF',
+          fontSize:20,
+          textShadowColor: 'rgba(255, 255, 255, 0.5)',
+          textShadowBlur: 10,
+          distance: 15
+        },
+        lineStyle:{
+          color:'#4EC8A6',
+          width:3,
+          shadowColor: 'rgba(255, 255, 255, 0.5)',
+          shadowBlur: 10,
+        },
+        areaStyle: {
+          normal: {
+              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                  offset: 0.2,
+                  color: '#4EC8A6'
+              }, {
+                  offset: 1,
+                  color: 'rgba(0,0,0,0)'
+              }])
+          }
+      },
+    }
+      
+  ]
+};
+  right.setOption(option)
 }

@@ -13,3 +13,11 @@ ipcRenderer.on('set-pie', (_, message) => {
     setPie2(message.province, message.wl.art, message.wl.science)
     setPie3(message.province, message.mz.hans, message.mz.noHans)
 })
+
+ipcRenderer.on('set-amount', (_, message) => {
+    setFinishCount( message.amount )
+})
+
+ipcRenderer.on('set-map', (_, message)=>{
+    setMap(`导入类别：${message.drlbmc}-`,message.own, message.finished)
+})

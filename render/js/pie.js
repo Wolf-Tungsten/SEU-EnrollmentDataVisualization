@@ -40,7 +40,7 @@ window.setPie1 = (province, male, female) => {
     backgroundColor: 'rgba(0,0,0,0)',
 
     title: {
-      text: `${province}-录取性别比例`,
+      text: `${province}-性别比例`,
       left: 'center',
       top: 15,
       textStyle: {
@@ -108,7 +108,7 @@ window.setPie2 = (province, art, science) => {
     backgroundColor: 'rgba(0,0,0,0)',
 
     title: {
-      text: `${province}-录取文/理比例`,
+      text: `${province}-文/理比例`,
       left: 'center',
       top: 15,
       textStyle: {
@@ -176,7 +176,7 @@ window.setPie3 = (province, hans, noHans) => {
     backgroundColor: 'rgba(0,0,0,0)',
 
     title: {
-      text: `${province}-录取少数民族比例`,
+      text: `${province}-少数民族比例`,
       left: 'center',
       top: 15,
       textStyle: {

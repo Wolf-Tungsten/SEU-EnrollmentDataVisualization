@@ -1,5 +1,5 @@
 const {app, BrowserWindow, globalShortcut, ipcMain, Menu} = require('electron')
-const {loadData, setPie} = require('./data')
+const {loadData, setPie, setMap} = require('./data')
 
 const ssmcList = require('./predefined-data/ssmc.json').ssmc
 const zymcList = Object.keys(require('./predefined-data/zymc2zydm.json'))
@@ -55,7 +55,7 @@ function createWindow () {
 function createMenu() {
 
   let submenu1 = [{label:'全国|全专业' ,role: '全国|全专业', 
-  click:(a,b,c) => {setPie('qg','',ipc)}
+  click:(a,b,c) => {setPie('qg','全国',ipc)}
 },{type: 'separator'}]
   ssmcList.forEach(element => {
     submenu1.push({
@@ -81,7 +81,10 @@ function createMenu() {
   drlbmcList.forEach(element => {
     submenu2.push({
       label:element,
-      role:element
+      role:element,
+      click:(a, b, c) => {
+        setMap(element, ipc)
+      }
     })
   })
 

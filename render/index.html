@@ -41,7 +41,7 @@
                     window.setFinishCount = (count) => {
                         $('#finish-count').text(count)
                     }
-                    setFinishCount(1100)
+                    setFinishCount(0)
                 </script>
             </div>
           </div>
@@ -86,6 +86,7 @@
         $('#middle-right').css('opacity', middleRight ? '1' : '0')
         $('#middle-right').css('z-index', middleRight ? '1' : '0')
     }
+    toggleBottom (false)
 </script>
 <script src="js/pie.js"></script>
 <script src="js/map.js"></script>

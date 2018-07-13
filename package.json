@@ -1,7 +1,8 @@
 {
   "name": "seu-enrollment-data-visualization",
+  "productName":"东南大学2018年录取实时数据",
   "version": "1.0.0",
-  "description": "东南大学学生处招生数据可视化",
+  "description": "东南大学2018年录取实时数据",
   "main": "main.js",
   "scripts": {
     "start": "electron .",

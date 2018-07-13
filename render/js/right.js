@@ -43,7 +43,7 @@ window.setProvinceBar = (finished, unfinished) => {
 
   for (let zymc in unfinished) {
     serial.push({
-        name: zymc+'未完成',
+        name: zymc,
         type: 'bar',
         stack: 'one',
         itemStyle: unfinishedStyle,
@@ -53,7 +53,7 @@ window.setProvinceBar = (finished, unfinished) => {
 
   let option = {
     title: {
-      text: `省市完成情况概览`,
+      text: `省市完成进度统计`,
       left: 'center',
       top: 15,
       textStyle: {
@@ -62,7 +62,24 @@ window.setProvinceBar = (finished, unfinished) => {
     },
     tooltip: {},
     backgroundColor: 'rgba(0,0,0,0)',
-    xAxis: [{
+    dataZoom: [
+      {
+          show: true,
+          realtime: true,
+          start: 0,
+          end: 100,
+          textStyle : {
+            color: '#f0f0f0'
+          }
+      },
+      {
+          type: 'inside',
+          realtime: true,
+          start: 0,
+          end: 100
+      }
+  ],
+    xAxis: {
       data: ssmcList,
       name: '省市',
       silent: false,
@@ -71,12 +88,13 @@ window.setProvinceBar = (finished, unfinished) => {
       splitLine: { show: false },
       splitArea: { show: false },
       axisLabel :{
-        interval: (index, value) => { return index % 2 === 0},
+        interval: 0,
         color: '#ffffff',
         shadowBlur: 50,
         shadowColor: 'rgba(255, 255, 255, 0.5)', 
         fontFamily: 'NotoSansSC-Regular',
-        fontSize: 16
+        fontSize: 16,
+        rotate: -45
       },
       axisLine: {
         lineStyle: {
@@ -85,31 +103,7 @@ window.setProvinceBar = (finished, unfinished) => {
           shadowColor: 'rgba(255, 255, 255, 0.5)',
         }
       }
-    },{
-      data: ssmcList,
-      name: '省市',
-      silent: false,
-      boundaryGap: true,
-      axisLine: { onZero: true },
-      splitLine: { show: false },
-      splitArea: { show: false },
-      axisLabel : {
-          interval: (index, value) => { return index % 2 === 1 },
-          color: '#ffffff',
-          shadowBlur: 50,
-          shadowColor: 'rgba(255, 255, 255, 0.5)',
-          fontFamily: 'NotoSansSC-Regular',
-          fontSize: 16
-      },
-        axisLine: {
-          lineStyle: {
-            color: 'rgba(0,0,0,0)' //坐标轴线颜色
-          }
-        },
-      splitLine:{
-        lineStyle:{color:'#ff0'}
-      }
-    }],
+    },
     yAxis: {
       inverse: false,
       splitArea: { show: false },
@@ -128,8 +122,9 @@ window.setProvinceBar = (finished, unfinished) => {
       }
     },
     grid: {
-      left: 100,
-      top: 100
+      left: 80,
+      top: 80,
+      bottom: 80
     },
     series: serial
   }

@@ -64,7 +64,7 @@ window.setMap = (drlbmc, own, finished) => {
   })
   let mapOption = {
     title: {
-      text: `${drlbmc}省市完成情况概览`,
+      text: `省市完成情况概览-${drlbmc}`,
       left: 'center',
       top: 15,
       textStyle: {

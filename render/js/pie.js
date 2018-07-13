@@ -30,7 +30,7 @@ const pie2 = echarts.init(document.getElementById('pie-2'))
 const pie3 = echarts.init(document.getElementById('pie-3'))
 
 window.setPie1 = (province, male, female) => {
-
+  if (province.length > 4) {province = province.slice(0,4) + '…'}
   let serial = [
     { value: male, name: '男', itemStyle: {color:'#EB5757'}},
     { value: female, name: '女'}
@@ -98,7 +98,7 @@ window.setPie1 = (province, male, female) => {
 }
 
 window.setPie2 = (province, art, science) => {
-
+  if (province.length > 4) {province = province.slice(0,4) + '…'}
   let serial = [
     { value: science, name: '理科', itemStyle: {color:'#FFD600'}},
     { value: art, name: '文科'}
@@ -167,6 +167,7 @@ window.setPie2 = (province, art, science) => {
 
 window.setPie3 = (province, hans, noHans) => {
 
+  if (province.length > 4) {province = province.slice(0,4) + '…'}
   let serial = [
     { value: noHans, name: '少数民族', itemStyle: {color:'#BB6BD9'}},
     { value: hans, name: '汉族'}

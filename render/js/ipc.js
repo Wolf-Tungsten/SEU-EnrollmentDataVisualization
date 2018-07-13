@@ -19,7 +19,7 @@ ipcRenderer.on('set-amount', (_, message) => {
 })
 
 ipcRenderer.on('set-map', (_, message)=>{
-    setMap(`导入类别：${message.drlbmc}-`,message.own, message.finished)
+    setMap(`${message.drlbmc}`,message.own, message.finished)
     toggleBottom (false)
 })
 

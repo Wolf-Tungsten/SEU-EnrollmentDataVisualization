@@ -135,26 +135,35 @@ const setMap = async (drlbmc, ipc) => {
 }
 
 const setProvinceBar = async(ipc) => {
-    let unfinished = {}
-    let finished = {}
-    Object.keys(zymc2zydm).forEach((zymc) => {
-        unfinished[zymc] = []
-        finished[zymc] = []
-    })
-    Object.keys(zydm2zymc).forEach((zydm)=>{
-        let zymc = zydm2zymc[zydm]
-        ssmcList.forEach( (ssmc) => {
-            let finishedList = srcData.filter( (item, index, array) => {
-                return item.ssmc === ssmc && item.zydm === zydm
-            })
-            finished[zymc].push(finishedList.length)
-            let amount = ssjhs[ssmc][zydm]
-            if (amount) {
-                unfinished[zymc].push(finishedList.length - amount)
-            } else {
-                unfinished[zymc].push(0)
-            }
-        })
+    let unfinished = {'未完成':[]}
+    let finished = {'已完成':[]}
+    // Object.keys(zymc2zydm).forEach((zymc) => {
+    //     unfinished[zymc] = []
+    //     finished[zymc] = []
+    // })
+    // Object.keys(zydm2zymc).forEach((zydm)=>{
+    //     let zymc = zydm2zymc[zydm]
+    //     ssmcList.forEach( (ssmc) => {
+    //         let finishedList = srcData.filter( (item, index, array) => {
+    //             return item.ssmc === ssmc && item.zydm === zydm
+    //         })
+    //         finished[zymc].push(finishedList.length)
+    //         let amount = ssjhs[ssmc][zydm]
+    //         if (amount) {
+    //             unfinished[zymc].push(finishedList.length - amount)
+    //         } else {
+    //             unfinished[zymc].push(0)
+    //         }
+    //     })
+    // })
+    ssmcList.forEach((ssmc) => {
+        let amount = ssjhs[ssmc].amount
+        let count = srcData.filter((item, index, value) => {
+            return item.ssmc === ssmc
+        }).length
+        let unfinishedCount = amount - count > 0 ? amount - count : 0
+        finished['已完成'].push(count)
+        unfinished['未完成'].push(unfinishedCount)
     })
     ipc('set-province-bar', {finished, unfinished})
 }

@@ -29,7 +29,7 @@ function createWindow () {
   })
   
   // Open the DevTools.
-  monitorWindow.webContents.openDevTools()
+  //monitorWindow.webContents.openDevTools()
 
   // Emitted when the window is closed.
   displayWindow.on('closed', function () {

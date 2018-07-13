@@ -3,9 +3,11 @@ const xlsx = require('node-xlsx')
 const zydm2zymc = require('./predefined-data/zydm2zymc.json')
 const zymc2zydm = require('./predefined-data/zymc2zydm.json')
 const ssmcList = require('./predefined-data/ssmc.json').ssmc
+const zymcList = require('./predefined-data/zymcList.json').zymc
 const drlbmc2drlbdm = require('./predefined-data/drlbmc2drlbdm.json')
 const drlbdm2ssmc = require('./predefined-data/drlbdm2ssmc.json')
 const ssjhs = require('./predefined-data/ssjhs.json')
+const zyjhs = require('./predefined-data/zyjhs.json')
 
 const keyList = ['nf','ssmc','drlbdm','xbmc','mzmc','klmc','cj','zydm']
 let srcData
@@ -40,8 +42,9 @@ const loadData = async (path, ipc) => {
     // 开始初始数据渲染
     ipc('set-amount', {amount:srcData.length})
     setPie('qg', '全国', ipc)
-    setMap('理', ipc)
-    setProvinceBar(ipc)
+    await setMap('理', ipc)
+    //setProvinceBar(ipc)
+    setZYBar(ipc)
 }
 
 const setPie = async (type, key, ipc) => {
@@ -154,6 +157,34 @@ const setProvinceBar = async(ipc) => {
     ipc('set-province-bar', {finished, unfinished})
 }
 
+const setZYBar = async(ipc) => {
+    let unfinished = {}
+    let finished = {}
+    
+    ssmcList.forEach ( (ssmc) => {
+        unfinished[ssmc] = []
+        finished[ssmc] = []
+    })
 
-module.exports = { loadData, setPie, setMap, setProvinceBar }
+    ssmcList.forEach ( (ssmc) => {
+        zymcList.forEach ((zymc) => {
+            if (zymc.indexOf('预科班') === -1) {
+            let zydm = zymc2zydm[zymc]
+           
+            let finishedList = srcData.filter( (item, index, array) => {
+                return item.ssmc === ssmc && item.zydm === zydm
+            })
+            let amount = zyjhs[zydm][ssmc]
+            finished[ssmc].push(finishedList.length)
+            if (amount) {
+                unfinished[ssmc].push(finishedList.length - amount)
+            } else {
+                unfinished[ssmc].push(0)
+            }
+        }
+        })
+    })
+    ipc('set-zy-bar', {finished, unfinished})
+}
+module.exports = { loadData, setPie, setMap, setProvinceBar ,setZYBar}
 

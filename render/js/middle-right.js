@@ -1,13 +1,23 @@
 const middleRight = echarts.init(document.getElementById('middle-right-container'))
-const zymcList = ["北京", "天津", "河北", "山西", "内蒙古", "辽宁", "吉林", "黑龙江", "上海", "江苏", "浙江", "安徽", "福建", "江西", "山东", "河南", "湖北", "湖南", "广东", "广西", "海南", "重庆", "四川", "贵州", "云南", "西藏", "陕西", "甘肃", "青海", "宁夏", "新疆"]
-console.log(ssmcList.length)
-window.setRightAsProcess = (data) => {
+const zymcList = ["文科试验班","工科试验班","经济学","英语","日语","数学","物理","工力","机械","测控与仪器","材料","能源","电气","电子","信息","电子无锡","信息无锡","自动化","计算机","软件","计算机人工智能","网安","土木","测绘","化工与制药","交运","环境","生医类","生医","建筑","城乡规划","风景园林","生物工程","临床医学","临床医学5+3","预防医学","医学检验","工程管理","工商管理","劳动与社会保障","工业工程","动画","美术","产品设计"]
+
+window.setZYBar = (finished, unfinished) => {
   let itemStyle = {
     normal: {
-      shadowBlur: 5,
+      color:'#2F80ED',
+    },
+    emphasis: {
+      barBorderWidth: 1,
+      shadowBlur: 10,
       shadowOffsetX: 0,
       shadowOffsetY: 0,
-      shadowColor: 'rgba(255,255,255,0.5)'
+      shadowColor: 'rgba(0,0,0,0)'
+    }
+  };
+
+  let unfinishedStyle = {
+    normal: {
+      color:'#FFFFFF',
     },
     emphasis: {
       barBorderWidth: 1,
@@ -18,24 +28,30 @@ window.setRightAsProcess = (data) => {
     }
   };
 
-  let unfinishedItemStyle = {
-    normal: {
-      shadowBlur: 5,
-      shadowOffsetX: 0,
-      shadowOffsetY: 0,
-      shadowColor: 'rgba(255,255,255,0.5)'
-    },
-    emphasis: {
-      barBorderWidth: 1,
-      shadowBlur: 10,
-      shadowOffsetX: 0,
-      shadowOffsetY: 0,
-      shadowColor: 'rgba(0,0,0,0.5)'
-    }
-  };
+  let serial = []
+  for (let ssmc in finished) {
+    serial.push({
+        name: ssmc,
+        type: 'bar',
+        stack: 'one',
+        itemStyle: itemStyle,
+        data: finished[ssmc]
+    })
+  }
+
+  for (let ssmc in unfinished) {
+    serial.push({
+        name: ssmc+'未完成',
+        type: 'bar',
+        stack: 'one',
+        itemStyle: unfinishedStyle,
+        data: unfinished[ssmc]
+    })
+  }
+
   let option = {
     title: {
-      text: `省市完成情况概览`,
+      text: `专业完成情况概览`,
       left: 'center',
       top: 15,
       textStyle: {
@@ -43,23 +59,22 @@ window.setRightAsProcess = (data) => {
       }
     },
     tooltip: {},
-    color: ['#2F80ED', '#2D9CDB', '#56CCF2', '#FFD600', '#FFFFFF'],
     backgroundColor: 'rgba(0,0,0,0)',
     xAxis: [{
-      data: ssmcList,
-      name: '省市',
+      data: zymcList,
+      name: '专业',
       silent: false,
       boundaryGap: true,
       axisLine: { onZero: true },
       splitLine: { show: false },
       splitArea: { show: false },
-      axisLabel: {
-        interval: (index, value) => { return index % 2 === 0 },
+      axisLabel :{
+        interval: (index, value) => { return index % 2 === 0},
         color: '#ffffff',
         shadowBlur: 50,
-        shadowColor: 'rgba(255, 255, 255, 0.5)',
+        shadowColor: 'rgba(255, 255, 255, 0.5)', 
         fontFamily: 'NotoSansSC-Regular',
-        fontSize: 16
+        fontSize: 10
       },
       axisLine: {
         lineStyle: {
@@ -68,29 +83,29 @@ window.setRightAsProcess = (data) => {
           shadowColor: 'rgba(255, 255, 255, 0.5)',
         }
       }
-    }, {
-      data: ssmcList,
-      name: '省市',
+    },{
+      data: zymcList,
+      name: '专业',
       silent: false,
       boundaryGap: true,
       axisLine: { onZero: true },
       splitLine: { show: false },
       splitArea: { show: false },
-      axisLabel: {
-        interval: (index, value) => { return index % 2 === 1 },
-        color: '#ffffff',
-        shadowBlur: 50,
-        shadowColor: 'rgba(255, 255, 255, 0.5)',
-        fontFamily: 'NotoSansSC-Regular',
-        fontSize: 16
+      axisLabel : {
+          interval: (index, value) => { return index % 2 === 1 },
+          color: '#ffffff',
+          shadowBlur: 50,
+          shadowColor: 'rgba(255, 255, 255, 0.5)',
+          fontFamily: 'NotoSansSC-Regular',
+          fontSize: 10
       },
-      axisLine: {
-        lineStyle: {
-          color: 'rgba(0,0,0,0)' //坐标轴线颜色
-        }
-      },
-      splitLine: {
-        lineStyle: { color: '#ff0' }
+        axisLine: {
+          lineStyle: {
+            color: 'rgba(0,0,0,0)' //坐标轴线颜色
+          }
+        },
+      splitLine:{
+        lineStyle:{color:'#ff0'}
       }
     }],
     yAxis: {
@@ -114,60 +129,9 @@ window.setRightAsProcess = (data) => {
       left: 100,
       top: 100
     },
-    series: [
-      {
-        name: '计算机',
-        type: 'bar',
-        stack: 'one',
-        itemStyle: itemStyle,
-        data: [10, 12, 8, 10, 12, 8, 10, 12, 8, 10, 12, 8, 10, 12, 8, 10, 12, 8, 10, 12, 8, 10, 12, 8, 10, 12, 8, 10, 12, 8, 10]
-      },
-      {
-        name: '软件',
-        type: 'bar',
-        stack: 'one',
-        itemStyle: itemStyle,
-        data: [10, 12, 8, 10, 12, 8, 10, 12, 8, 10, 12, 8, 10, 12, 8, 10, 12, 8, 10, 12, 8, 10, 12, 8, 10, 12, 8, 10, 12, 8, 10]
-      },
-      {
-        name: '电子',
-        type: 'bar',
-        stack: 'one',
-        itemStyle: itemStyle,
-        data: [10, 12, 8, 10, 12, 8, 10, 12, 8, 10, 12, 8, 10, 12, 8, 10, 12, 8, 10, 12, 8, 10, 12, 8, 10, 12, 8, 10, 12, 8, 10]
-      },
-      {
-        name: '信息未完成',
-        type: 'bar',
-        stack: 'one',
-        itemStyle: itemStyle,
-        data: [10, 12, -8, 10, 12, 8, -10, 12, 8, 10, -12, 8, 10, 12, 8, -10, 12, -8, 10, 12, 8, 10, -12, 8, 10, 12, 8, 10, 12, 8, 10]
-      },
-      {
-        name: '计算机未完成',
-        type: 'bar',
-        stack: 'one',
-        itemStyle: itemStyle,
-        data: [10, 12, -8, 10, 12, 8, -10, 12, 8, 10, -12, 8, 10, 12, 8, -10, 12, -8, 10, 12, 8, 10, -12, 8, 10, 12, 8, 10, 12, 8, 10]
-      },
-      {
-        name: '软件未完成',
-        type: 'bar',
-        stack: 'one',
-        itemStyle: itemStyle,
-        data: [10, 12, -8, 10, 12, 8, -10, 12, 8, 10, -12, 8, 10, 12, 8, -10, 12, -8, 10, 12, 8, 10, -12, 8, 10, 12, 8, 10, 12, 8, 10]
-      },
-      {
-        name: '电子未完成',
-        type: 'bar',
-        stack: 'one',
-        itemStyle: itemStyle,
-        data: [10, 12, -8, 10, 12, 8, -10, 12, 8, 10, -12, 8, 10, 12, 8, -10, 12, -8, 10, 12, 8, 10, -12, 8, 10, 12, 8, 10, 12, 8, 10]
-      }
-    ]
+    series: serial
   }
-
-  right.setOption(option)
+  middleRight.setOption(option)
 }
 
 window.setRightAsHistory = (data) => {

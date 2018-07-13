@@ -27,3 +27,8 @@ ipcRenderer.on('set-province-bar', (_, message)=>{
     setProvinceBar(message.finished, message.unfinished)
     toggleBottom (false)
 })
+
+ipcRenderer.on('set-zy-bar', (_, message)=>{
+    setZYBar(message.finished, message.unfinished)
+    toggleBottom (true)
+})

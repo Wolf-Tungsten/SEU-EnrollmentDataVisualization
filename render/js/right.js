@@ -3,6 +3,7 @@ const ssmcList = ["北京","天津","河北","山西","内蒙古","辽宁","吉�
 
 
 window.setProvinceBar = (finished, unfinished) => {
+  right.clear()
   let itemStyle = {
     normal: {
       color:'#2F80ED',
@@ -137,7 +138,7 @@ window.setProvinceBar = (finished, unfinished) => {
 }
 
 window.setHistory = (ssmc, ws, lg) => {
-
+  right.clear()
 let option = {
   title: {
     text: `${ssmc}近年(2014-2018)录取线变化`,

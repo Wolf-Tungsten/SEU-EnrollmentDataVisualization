@@ -1,5 +1,5 @@
 const {app, BrowserWindow, globalShortcut, ipcMain, Menu} = require('electron')
-const {loadData, setPie, setMap, setProvinceBar, setZYBar} = require('./data')
+const {loadData, setPie, setMap, setProvinceBar, setZYBar, setHistory} = require('./data')
 
 const ssmcList = require('./predefined-data/ssmc.json').ssmc
 const zymcList = Object.keys(require('./predefined-data/zymc2zydm.json'))
@@ -88,6 +88,16 @@ function createMenu() {
     })
   })
 
+  let submenu3 = []
+  ssmcList.forEach( ssmc => {
+    submenu3.push({
+      label:ssmc,
+      role:ssmc,
+      click:(a, b, c) => {
+        setHistory(ssmc, ipc)
+      }
+    })
+  })
   const template = [
     {
       label: '环状图切片',
@@ -111,7 +121,11 @@ function createMenu() {
           click:async (a,b,c) => { await setZYBar(ipc)}
         }
       ]
-    }
+    },
+    {
+      label: '录取线省市',
+      submenu: submenu3
+    },
   ]
 
   const menu = Menu.buildFromTemplate(template)

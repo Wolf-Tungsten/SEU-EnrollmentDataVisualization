@@ -8,6 +8,7 @@ const drlbmc2drlbdm = require('./predefined-data/drlbmc2drlbdm.json')
 const drlbdm2ssmc = require('./predefined-data/drlbdm2ssmc.json')
 const ssjhs = require('./predefined-data/ssjhs.json')
 const zyjhs = require('./predefined-data/zyjhs.json')
+const history = require('./predefined-data/history.json')
 
 const keyList = ['nf','ssmc','drlbdm','xbmc','mzmc','klmc','cj','zydm']
 let srcData
@@ -187,5 +188,32 @@ const setZYBar = async(ipc) => {
     })
     ipc('set-zy-bar', {finished, unfinished})
 }
-module.exports = { loadData, setPie, setMap, setProvinceBar ,setZYBar}
+
+const setHistory = async(ssmc, ipc) => {
+    let ws = []
+    let lg = []
+    let years = ['2014', '2015', '2016', '2017']
+    years.forEach((year) => {
+        ws.push(history[ssmc][year]['文史'] === -1 ? null : history[ssmc][year]['文史'])
+        lg.push(history[ssmc][year]['理工'] === -1 ? null : history[ssmc][year]['理工'])
+    })
+    let wsList = srcData.filter((item, index, array) => {
+        return item.ssmc === ssmc && item.drlbdm === '01'
+    })
+    let lgList = srcData.filter((item, index, array) => {
+        return item.ssmc === ssmc && item.drlbdm === '02'
+    })
+    wsList.sort((a,b) => {
+        return b.cj - a.cj
+    })
+    lgList.sort((a,b) => {
+        return b.cj - a.cj
+    })
+    console.log(wsList)
+    ws.push(wsList.length > 0 ? wsList[wsList.length - 1].cj : null)
+    lg.push(lgList.length > 0 ? lgList[lgList.length - 1].cj : null)
+
+    ipc('set-history', {ws, lg, ssmc})
+}
+module.exports = { loadData, setPie, setMap, setProvinceBar ,setZYBar, setHistory}
 

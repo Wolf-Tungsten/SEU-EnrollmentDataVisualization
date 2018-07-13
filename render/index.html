@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Hello World!</title>
+    <title>东南大学招生录取数据可视化</title>
     <!-- Insert this line above script imports  -->
     <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
     
@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="css/index.css" type="text/css"/>
   </head>
   <body style="margin:0">
-      <div class="container" style="width: 1920px; height: 720px; transform: scaleY(1.); transform-origin: 0 0 ; overflow: hidden;">
+      <div id="container" class="container" style="width: 1920px; height: 720px; transform-origin: 0 0 ; overflow: hidden;">
           <div id="up">
             <div id="time-container">
                 <span class="label-background text" style="margin-right:20px;">当前时间</span>
@@ -91,4 +91,6 @@
 <script src="js/map.js"></script>
 <script src="js/right.js"></script>
 <script src="js/middle-right.js"></script>
+<script src="js/ipc.js"></script>
+<script src="js/drag-drop.js"></script>
 </html>

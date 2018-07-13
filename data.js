@@ -1,9 +1,11 @@
 const xlsx = require('node-xlsx')
 
 const zydm2zymc = require('./predefined-data/zydm2zymc.json')
+const zymc2zydm = require('./predefined-data/zymc2zydm.json')
 const ssmcList = require('./predefined-data/ssmc.json').ssmc
 const drlbmc2drlbdm = require('./predefined-data/drlbmc2drlbdm.json')
 const drlbdm2ssmc = require('./predefined-data/drlbdm2ssmc.json')
+const ssjhs = require('./predefined-data/ssjhs.json')
 
 const keyList = ['nf','ssmc','drlbdm','xbmc','mzmc','klmc','cj','zydm']
 let srcData
@@ -39,6 +41,7 @@ const loadData = async (path, ipc) => {
     ipc('set-amount', {amount:srcData.length})
     setPie('qg', '全国', ipc)
     setMap('理', ipc)
+    setProvinceBar(ipc)
 }
 
 const setPie = async (type, key, ipc) => {
@@ -91,7 +94,6 @@ const setMap = async (drlbmc, ipc) => {
     let finishedMap = {}
 
     let drlbdm = drlbmc2drlbdm[drlbmc]
-    console.log(drlbdm, drlbmc, drlbdm2ssmc[drlbdm])
     // 获取所有涉及该计划的省市
     if ( drlbdm2ssmc[drlbdm] ) {
         Object.keys(drlbdm2ssmc[drlbdm]).forEach ((ssmc)=>{
@@ -103,7 +105,7 @@ const setMap = async (drlbmc, ipc) => {
     // 遍历数据获取完成情况
 
     srcData.forEach((item)=>{
-        console.log(drlbdm, item.drlbdm)        
+        //console.log(drlbdm, item.drlbdm)        
         if (item.drlbdm == drlbdm) {
             finishedMap[item.ssmc] = 1
             ownMap[item.ssmc] = 0
@@ -121,12 +123,37 @@ const setMap = async (drlbmc, ipc) => {
         if (finishedMap[ssmc]) { finished.push(ssmc) }
     }
 
-    console.log('包含该计划但未完成的省市', own)
-    console.log('已完成该计划的省市',finished)
+    //console.log('包含该计划但未完成的省市', own)
+    //console.log('已完成该计划的省市',finished)
 
     ipc('set-map', {drlbmc, finished, own})
 }
 
+const setProvinceBar = async(ipc) => {
+    let unfinished = {}
+    let finished = {}
+    Object.keys(zymc2zydm).forEach((zymc) => {
+        unfinished[zymc] = []
+        finished[zymc] = []
+    })
+    Object.keys(zydm2zymc).forEach((zydm)=>{
+        let zymc = zydm2zymc[zydm]
+        ssmcList.forEach( (ssmc) => {
+            let finishedList = srcData.filter( (item, index, array) => {
+                return item.ssmc === ssmc && item.zydm === zydm
+            })
+            finished[zymc].push(finishedList.length)
+            let amount = ssjhs[ssmc][zydm]
+            if (amount) {
+                unfinished[zymc].push(finishedList.length - amount)
+            } else {
+                unfinished[zymc].push(0)
+            }
+        })
+    })
+    ipc('set-province-bar', {finished, unfinished})
+}
 
-module.exports = { loadData, setPie, setMap }
+
+module.exports = { loadData, setPie, setMap, setProvinceBar }
 

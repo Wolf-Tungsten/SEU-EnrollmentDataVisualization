@@ -1,13 +1,24 @@
 const right = echarts.init(document.getElementById('right-container'))
-const ssmcList = ["北京", "天津", "河北", "山西", "内蒙古", "辽宁", "吉林", "黑龙江", "上海", "江苏", "浙江", "安徽", "福建", "江西", "山东", "河南", "湖北", "湖南", "广东", "广西", "海南", "重庆", "四川", "贵州", "云南", "西藏", "陕西", "甘肃", "青海", "宁夏", "新疆"]
-console.log(ssmcList.length)
-window.provinceProcess = (data) => {
+const ssmcList = ["北京","天津","河北","山西","内蒙古","辽宁","吉林","黑龙江","上海","江苏","浙江","安徽","福建","江西","山东","河南","湖北","湖南","广东","广西","海南","重庆","四川","贵州","云南","西藏","陕西","甘肃","青海","宁夏","新疆"]
+
+
+window.setProvinceBar = (finished, unfinished) => {
   let itemStyle = {
     normal: {
-      shadowBlur: 5,
+      color:'#2F80ED',
+    },
+    emphasis: {
+      barBorderWidth: 1,
+      shadowBlur: 10,
       shadowOffsetX: 0,
       shadowOffsetY: 0,
-      shadowColor: 'rgba(255,255,255,0.5)'
+      shadowColor: 'rgba(0,0,0,0)'
+    }
+  };
+
+  let unfinishedStyle = {
+    normal: {
+      color:'#FFFFFF',
     },
     emphasis: {
       barBorderWidth: 1,
@@ -17,6 +28,27 @@ window.provinceProcess = (data) => {
       shadowColor: 'rgba(0,0,0,0.5)'
     }
   };
+
+  let serial = []
+  for (let zymc in finished) {
+    serial.push({
+        name: zymc,
+        type: 'bar',
+        stack: 'one',
+        itemStyle: itemStyle,
+        data: finished[zymc]
+    })
+  }
+
+  for (let zymc in unfinished) {
+    serial.push({
+        name: zymc+'未完成',
+        type: 'bar',
+        stack: 'one',
+        itemStyle: unfinishedStyle,
+        data: unfinished[zymc]
+    })
+  }
 
   let option = {
     title: {
@@ -28,7 +60,6 @@ window.provinceProcess = (data) => {
       }
     },
     tooltip: {},
-    color: ['#2F80ED', '#2D9CDB', '#56CCF2', '#FFD600', '#FFFFFF'],
     backgroundColor: 'rgba(0,0,0,0)',
     xAxis: [{
       data: ssmcList,
@@ -99,64 +130,12 @@ window.provinceProcess = (data) => {
       left: 100,
       top: 100
     },
-    series: [
-      {
-        name: '计算机',
-        type: 'bar',
-        stack: 'one',
-        itemStyle: itemStyle,
-        data: [10, 12, 8, 10, 12, 8, 10, 12, 8, 10, 12, 8, 10, 12, 8, 10, 12, 8, 10, 12, 8, 10, 12, 8, 10, 12, 8, 10, 12, 8, 10]
-      },
-      {
-        name: '软件',
-        type: 'bar',
-        stack: 'one',
-        itemStyle: itemStyle,
-        data: [10, 12, 8, 10, 12, 8, 10, 12, 8, 10, 12, 8, 10, 12, 8, 10, 12, 8, 10, 12, 8, 10, 12, 8, 10, 12, 8, 10, 12, 8, 10]
-      },
-      {
-        name: '电子',
-        type: 'bar',
-        stack: 'one',
-        itemStyle: itemStyle,
-        data: [10, 12, 8, 10, 12, 8, 10, 12, 8, 10, 12, 8, 10, 12, 8, 10, 12, 8, 10, 12, 8, 10, 12, 8, 10, 12, 8, 10, 12, 8, 10]
-      },
-      {
-        name: '信息未完成',
-        type: 'bar',
-        stack: 'one',
-        itemStyle: itemStyle,
-        data: [10, 12, -8, 10, 12, 8, -10, 12, 8, 10, -12, 8, 10, 12, 8, -10, 12, -8, 10, 12, 8, 10, -12, 8, 10, 12, 8, 10, 12, 8, 10]
-      },
-      {
-        name: '计算机未完成',
-        type: 'bar',
-        stack: 'one',
-        itemStyle: itemStyle,
-        data: [10, 12, -8, 10, 12, 8, -10, 12, 8, 10, -12, 8, 10, 12, 8, -10, 12, -8, 10, 12, 8, 10, -12, 8, 10, 12, 8, 10, 12, 8, 10]
-      },
-      {
-        name: '软件未完成',
-        type: 'bar',
-        stack: 'one',
-        itemStyle: itemStyle,
-        data: [10, 12, -8, 10, 12, 8, -10, 12, 8, 10, -12, 8, 10, 12, 8, -10, 12, -8, 10, 12, 8, 10, -12, 8, 10, 12, 8, 10, 12, 8, 10]
-      },
-      {
-        name: '电子未完成',
-        type: 'bar',
-        stack: 'one',
-        itemStyle: itemStyle,
-        data: [10, 12, -8, 10, 12, 8, -10, 12, 8, 10, -12, 8, 10, 12, 8, -10, 12, -8, 10, 12, 8, 10, -12, 8, 10, 12, 8, 10, 12, 8, 10]
-      }
-    ]
+    series: serial
   }
-
   right.setOption(option)
+
 }
 
 window.setRightAsHistory = (data) => {
 
 }
-
-provinceProcess([])

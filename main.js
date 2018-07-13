@@ -1,5 +1,5 @@
 const {app, BrowserWindow, globalShortcut, ipcMain, Menu} = require('electron')
-const {loadData, setPie, setMap} = require('./data')
+const {loadData, setPie, setMap, setProvinceBar} = require('./data')
 
 const ssmcList = require('./predefined-data/ssmc.json').ssmc
 const zymcList = Object.keys(require('./predefined-data/zymc2zydm.json'))
@@ -102,7 +102,8 @@ function createMenu() {
       submenu: [
         {
           label: '省市视图',
-          role: '省市视图'
+          role: '省市视图',
+          click:async (a,b,c) => { await setProvinceBar(ipc)}
         },
         {
           label: '专业视图',

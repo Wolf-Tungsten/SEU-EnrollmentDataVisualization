@@ -18,6 +18,21 @@ window.setRightAsProcess = (data) => {
     }
   };
 
+  let unfinishedItemStyle = {
+    normal: {
+      shadowBlur: 5,
+      shadowOffsetX: 0,
+      shadowOffsetY: 0,
+      shadowColor: 'rgba(255,255,255,0.5)'
+    },
+    emphasis: {
+      barBorderWidth: 1,
+      shadowBlur: 10,
+      shadowOffsetX: 0,
+      shadowOffsetY: 0,
+      shadowColor: 'rgba(0,0,0,0.5)'
+    }
+  };
   let option = {
     title: {
       text: `省市完成情况概览`,
@@ -157,5 +172,3 @@ window.setRightAsProcess = (data) => {
 
 window.setRightAsHistory = (data) => {
 }
-
-setRightAsProcess([])

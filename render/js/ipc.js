@@ -20,4 +20,10 @@ ipcRenderer.on('set-amount', (_, message) => {
 
 ipcRenderer.on('set-map', (_, message)=>{
     setMap(`导入类别：${message.drlbmc}-`,message.own, message.finished)
+    toggleBottom (false)
+})
+
+ipcRenderer.on('set-province-bar', (_, message)=>{
+    setProvinceBar(message.finished, message.unfinished)
+    toggleBottom (false)
 })

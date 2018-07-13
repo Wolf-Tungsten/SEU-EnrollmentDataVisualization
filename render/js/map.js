@@ -32,7 +32,7 @@ let mapOptionTemplate = {
 const map = echarts.init(document.getElementById('map-container'))
 
 window.setMap = (drlbmc, own, finished) => {
-
+  map.clear()
   let dataSerial = []
 
   own.forEach(ssmc => {

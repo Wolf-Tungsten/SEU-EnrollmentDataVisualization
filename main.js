@@ -89,13 +89,19 @@ function createMenu() {
   })
 
   let submenu3 = []
+  let historyType = ['985高校排名','录取线','录取线超本一线分值','录取线省排名']
   ssmcList.forEach( ssmc => {
     submenu3.push({
       label:ssmc,
       role:ssmc,
-      click:(a, b, c) => {
-        setHistory(ssmc, ipc)
-      }
+      submenu: historyType.map((type, index, array) => {
+        return {
+          label: type,
+          click: (a, b, c) => {
+            setHistory(ssmc, type, ipc)
+          }
+        }
+      })
     })
   })
   const template = [
@@ -108,7 +114,7 @@ function createMenu() {
       submenu: submenu2
     },
     {
-      label: '双向柱状图',
+      label: '进度柱状图',
       submenu: [
         {
           label: '省市视图',

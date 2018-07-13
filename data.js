@@ -169,31 +169,44 @@ const setProvinceBar = async(ipc) => {
 }
 
 const setZYBar = async(ipc) => {
-    let unfinished = {}
-    let finished = {}
+    let unfinished = {'未完成':[]}
+    let finished = {'已完成':[]}
     
-    ssmcList.forEach ( (ssmc) => {
-        unfinished[ssmc] = []
-        finished[ssmc] = []
-    })
+    // ssmcList.forEach ( (ssmc) => {
+    //     unfinished[ssmc] = []
+    //     finished[ssmc] = []
+    // })
 
-    ssmcList.forEach ( (ssmc) => {
-        zymcList.forEach ((zymc) => {
-            if (zymc.indexOf('预科班') === -1) {
-            let zydm = zymc2zydm[zymc]
+    // ssmcList.forEach ( (ssmc) => {
+    //     zymcList.forEach ((zymc) => {
+    //         if (zymc.indexOf('预科班') === -1) {
+    //         let zydm = zymc2zydm[zymc]
            
-            let finishedList = srcData.filter( (item, index, array) => {
-                return item.ssmc === ssmc && item.zydm === zydm
-            })
-            let amount = zyjhs[zydm][ssmc]
-            finished[ssmc].push(finishedList.length)
-            if (amount) {
-                unfinished[ssmc].push(finishedList.length - amount)
-            } else {
-                unfinished[ssmc].push(0)
-            }
+    //         let finishedList = srcData.filter( (item, index, array) => {
+    //             return item.ssmc === ssmc && item.zydm === zydm
+    //         })
+    //         let amount = zyjhs[zydm][ssmc]
+    //         finished[ssmc].push(finishedList.length)
+    //         if (amount) {
+    //             unfinished[ssmc].push(finishedList.length - amount)
+    //         } else {
+    //             unfinished[ssmc].push(0)
+    //         }
+    //     }
+    //     })
+    // })
+
+    zymcList.forEach ((zymc) => {
+        if (zymc.indexOf('预科班') === -1) {
+            let zydm = zymc2zydm[zymc]
+            let amount = zyjhs[zydm].amount
+            let finishedCount = srcData.filter((item, index, array) => {
+                return item.zydm === zydm
+            }).length
+            let unfinishedCount = amount - finishedCount > 0 ? amount - finishedCount : 0
+            finished['已完成'].push(finishedCount)
+            unfinished['未完成'].push(unfinishedCount)
         }
-        })
     })
     ipc('set-zy-bar', {finished, unfinished})
 }

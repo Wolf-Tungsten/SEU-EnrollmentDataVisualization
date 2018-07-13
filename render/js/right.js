@@ -5,6 +5,8 @@ const ssmcList = ["北京","天津","河北","山西","内蒙古","辽宁","吉�
 window.setProvinceBar = (finished, unfinished) => {
   right.clear()
   let itemStyle = {
+    shadowColor: 'rgba(255, 255, 255, 0.5)',
+    shadowBlur: 5,
     normal: {
       color:'#2F80ED',
     },
@@ -18,6 +20,8 @@ window.setProvinceBar = (finished, unfinished) => {
   };
 
   let unfinishedStyle = {
+    shadowColor: 'rgba(255, 255, 255, 0.5)',
+    shadowBlur: 5,
     normal: {
       color:'#FFFFFF',
     },
@@ -107,11 +111,13 @@ window.setProvinceBar = (finished, unfinished) => {
     yAxis: {
       inverse: false,
       splitArea: { show: false },
-      axisLabel: {
+      axisLabel :{
+        interval: 0,
         color: '#ffffff',
         shadowBlur: 50,
-        shadowColor: 'rgba(255, 255, 255, 0.5)',
-        fontFamily: 'NotoSansSC-Regular'
+        shadowColor: 'rgba(255, 255, 255, 0.5)', 
+        fontFamily: 'NotoSansSC-Regular',
+        fontSize: 16
       },
       axisLine: {
         lineStyle: {
@@ -132,11 +138,52 @@ window.setProvinceBar = (finished, unfinished) => {
 
 }
 
-window.setHistory = (ssmc, ws, lg) => {
+window.setHistory = (title, data) => {
   right.clear()
+
+  let series = []
+  let color = ['#88DFF8', '#F2C94C']
+  Object.keys(data).forEach((key, index, array) => {
+      series.push(
+        {
+          name:key,
+          type:'line',
+          connectNulls: true,
+          data:data[key],
+          smooth: true,
+          symbolSize:10,
+          label:{
+            position: [20, -20],
+            show: true,
+            color: '#FFF',
+            fontSize:20,
+            textShadowColor: 'rgba(255, 255, 255, 0.5)',
+            textShadowBlur: 10,
+            distance: 15
+          },
+          lineStyle:{
+            color:color[index],
+            width:3,
+            shadowColor: 'rgba(255, 255, 255, 0.5)',
+            shadowBlur: 5,
+          },
+          areaStyle: {
+            normal: {
+                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                    offset: 0.2,
+                    color: color[index]
+                }, {
+                    offset: 1,
+                    color: 'rgba(0,0,0,0)'
+                }])
+            }
+          }
+        }
+      )
+  })
 let option = {
   title: {
-    text: `${ssmc}近年(2014-2018)录取线变化`,
+    text: title,
     left: 'center',
     top: 15,
     textStyle: {
@@ -151,7 +198,7 @@ let option = {
       trigger: 'axis'
   },
   legend: {
-      data:['文史类','理工类'],
+      data:Object.keys(data),
       top: 50,
       textStyle:{
         color:'#F0f0f0',
@@ -193,76 +240,12 @@ let option = {
         }
       }
   },
-  series: [
-      {
-          name:'文史类',
-          type:'line',
-          connectNulls: true,
-          data:ws,
-          smooth: true,
-          symbolSize:10,
-          label:{
-            position: [20, -20],
-            show: true,
-            color: '#FFF',
-            fontSize:20,
-            textShadowColor: 'rgba(255, 255, 255, 0.5)',
-            textShadowBlur: 10,
-            distance: 15
-          },
-          lineStyle:{
-            color:'#F2C94C',
-            width:3,
-            shadowColor: 'rgba(255, 255, 255, 0.5)',
-            shadowBlur: 10,
-          },
-          areaStyle: {
-            normal: {
-                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                    offset: 0.2,
-                    color: '#F2C94C'
-                }, {
-                    offset: 1,
-                    color: 'rgba(0,0,0,0)'
-                }])
-            }
-        },
-      },{
-        name:'理工类',
-        type:'line',
-        connectNulls: true,
-        data:lg,
-        smooth: true,
-        symbolSize:10,
-        label:{
-          position: [20, -20],
-          show: true,
-          color: '#FFF',
-          fontSize:20,
-          textShadowColor: 'rgba(255, 255, 255, 0.5)',
-          textShadowBlur: 10,
-          distance: 15
-        },
-        lineStyle:{
-          color:'#4EC8A6',
-          width:3,
-          shadowColor: 'rgba(255, 255, 255, 0.5)',
-          shadowBlur: 10,
-        },
-        areaStyle: {
-          normal: {
-              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                  offset: 0.2,
-                  color: '#4EC8A6'
-              }, {
-                  offset: 1,
-                  color: 'rgba(0,0,0,0)'
-              }])
-          }
-      },
-    }
-      
-  ]
+  series: series
 };
   right.setOption(option)
 }
+
+setHistory('测试', {
+  '文科':[1, 5 ,4 ,3, 4],
+  '理科':[4,5,2,1,3]
+})

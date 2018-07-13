@@ -81,7 +81,7 @@ window.setPie1 = (province, male, female) => {
         itemStyle: {
           normal: {
             color: '#ffffff',
-            shadowBlur: 20,
+            shadowBlur: 5,
             shadowColor: 'rgba(255, 255, 255, 0.5)'
           }
         },
@@ -150,7 +150,7 @@ window.setPie2 = (province, art, science) => {
         itemStyle: {
           normal: {
             color: '#ffffff',
-            shadowBlur: 20,
+            shadowBlur: 5,
             shadowColor: 'rgba(255, 255, 255, 0.5)'
           }
         },
@@ -219,7 +219,7 @@ window.setPie3 = (province, hans, noHans) => {
         itemStyle: {
           normal: {
             color: '#ffffff',
-            shadowBlur: 20,
+            shadowBlur: 5,
             shadowColor: 'rgba(255, 255, 255, 0.5)'
           }
         },

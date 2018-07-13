@@ -43,7 +43,7 @@ window.setMap = (drlbmc, own, finished) => {
           areaColor: '#fff',
           borderWidth: 0,
           shadowColor: 'rgba(255, 255, 255, 0.5)',
-          shadowBlur: 10
+          shadowBlur: 5
         }
       }
     )
@@ -57,7 +57,7 @@ window.setMap = (drlbmc, own, finished) => {
           areaColor: '#27ae60', 
           borderWidth: 0, 
           shadowColor: '#27ae60',
-          shadowBlur: 20
+          shadowBlur: 5
         }
       }
     )
@@ -80,7 +80,7 @@ window.setMap = (drlbmc, own, finished) => {
         itemStyle: {
           areaColor: 'rgba(255,255,255,0.2)',
           borderWidth: 1,
-          shadowColor: 'rgba(255, 255, 255, 1)',
+          shadowColor: 'rgba(255, 255, 255, 0)',
           shadowBlur: 20,
           borderColor: 'rgba(0,0,0,0)',
           label: { show: true },

@@ -12,7 +12,7 @@ const history = require('./predefined-data/history.json')
 
 const keyList = ['nf','ssmc','drlbdm','xbmc','mzmc','klmc','cj','zydm']
 let srcData
-
+let historyData
 const normalizeSSMC = (ssmc) => {
     let result
     console.log(ssmcList)
@@ -28,25 +28,53 @@ const loadData = async (path, ipc) => {
     // 加载原始数据
     srcData = []
     let orginData = xlsx.parse(path)
-    let tableHeader = orginData[0].data[0]
-    orginData[0].data.forEach((row, index, arr) => {
-        if (index !== 0 && row[0] == 2018) { // 只导入2018年
-            let item = {}
-            keyList.forEach(careKey => {
-                item[careKey] = row[tableHeader.indexOf(careKey)]
-            })
-            item.ssmc = normalizeSSMC(item.ssmc) //省市名称规整
-            console.log(item)
-            srcData.push(item)
-        }
-    })
-    // 开始初始数据渲染
-    ipc('set-amount', {amount:srcData.length})
-    setPie('qg', '全国', ipc)
-    await setZYBar(ipc)
-    setMap('理', ipc)
-    setProvinceBar(ipc)
-    
+    if (orginData[0].data[0][0] === 'nf') {
+        // 导入的是本年度录取数据
+        let tableHeader = orginData[0].data[0]
+        orginData[0].data.forEach((row, index, arr) => {
+            if (index !== 0 && row[0] == 2018) { // 只导入2018年
+                let item = {}
+                keyList.forEach(careKey => {
+                    item[careKey] = row[tableHeader.indexOf(careKey)]
+                })
+                item.ssmc = normalizeSSMC(item.ssmc) //省市名称规整
+                console.log(item)
+                srcData.push(item)
+            }
+        })
+        // 开始初始数据渲染
+        ipc('set-amount', {amount:srcData.length})
+        setPie('qg', '全国', ipc)
+        await setZYBar(ipc)
+        setMap('理', ipc)
+        setProvinceBar(ipc)
+    } else {
+        // 导入的是历史数据
+        orginData[0].data.forEach((row, index, arr) => {
+            if (index > 1) {
+                let ssmc = normalizeSSMC(row[1])
+                if (!historyData[ssmc]) {historyData[ssmc]={
+                    '985高校排名':[],
+                    '文史类录取线':[],
+                    '文史类超本一线分数':[],
+                    '文史类录取线省排名':[],
+                    '理工类录取线':[],
+                    '理工类超本一线分数':[],
+                    '理工类录取线省排名':[],
+                }}
+                let type = [ '985高校排名',
+                '文史类录取线',
+                '文史类超本一线分数',
+                '文史类录取线省排名',
+                '理工类录取线',
+                '理工类超本一线分数',
+                '理工类录取线省排名']
+                
+
+
+            }
+        })
+    }
 }
 
 const setPie = async (type, key, ipc) => {

@@ -1,14 +1,16 @@
 const {app, BrowserWindow, globalShortcut, ipcMain, Menu} = require('electron')
-const {loadData} = require('./data')
+const {loadData, setPie} = require('./data')
+
 const ssmcList = require('./predefined-data/ssmc.json').ssmc
 const zymcList = Object.keys(require('./predefined-data/zymc2zydm.json'))
 const drlbmcList = Object.keys(require('./predefined-data/drlbmc2drlbdm.json'))
+const zymc2zydm = require('./predefined-data/zymc2zydm.json')
 
 app.setName("招生录取数据可视化")
 let mainWindow
 let displayWindow
 let ipc
-//require('electron-reload')(__dirname);
+require('electron-reload')(__dirname);
 
 function createWindow () {
   // Create the browser window.
@@ -52,23 +54,28 @@ function createWindow () {
 
 function createMenu() {
 
-  let submenu1 = [{label:'全国|全专业' ,role: '全国|全专业'},{type: 'separator'}]
+  let submenu1 = [{label:'全国|全专业' ,role: '全国|全专业', 
+  click:(a,b,c) => {setPie('qg','',ipc)}
+},{type: 'separator'}]
   ssmcList.forEach(element => {
     submenu1.push({
       label:element,
-      role:element
+      role:element,
+      click:(a, b, c) => {
+        setPie('ssmc', element, ipc)
+      }
     })
   })
   submenu1.push({type: 'separator'})
   zymcList.forEach(element => {
-    console.log(element)
     submenu1.push({
       label:element,
-      role:element
+      role:element,
+      click:(a, b, c) => {
+        setPie('zydm', zymc2zydm[element], ipc)
+      }
     })
   })
-
-  console.log(submenu1)
 
   let submenu2 = []
   drlbmcList.forEach(element => {

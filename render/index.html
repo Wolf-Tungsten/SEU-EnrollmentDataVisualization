@@ -81,11 +81,11 @@
     window.toggleBottom = (middleRight) => {
         ['#right', '#middle', '#map-legend'].forEach(element => {
             $(element).css('opacity', middleRight ? '0' : '1')
+            $(element).css('z-index', middleRight ? '0' : '1')
         })
         $('#middle-right').css('opacity', middleRight ? '1' : '0')
+        $('#middle-right').css('z-index', middleRight ? '1' : '0')
     }
-
-    toggleBottom(true)
 </script>
 <script src="js/pie.js"></script>
 <script src="js/map.js"></script>

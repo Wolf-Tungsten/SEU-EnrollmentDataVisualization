@@ -106,6 +106,7 @@ window.setMap = (drlbmc, own, finished) => {
   }
 
   map.setOption(mapOption)
+  toggleBottom(false)
 }
 
 setMap('普通文', ['内蒙古', '宁夏', '江苏', '福建'], ['广东', '黑龙江', '新疆', '辽宁', '山西', '甘肃', '贵州'])

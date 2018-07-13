@@ -15,7 +15,6 @@ let srcData
 let historyData
 const normalizeSSMC = (ssmc) => {
     let result
-    console.log(ssmcList)
     ssmcList.forEach(normal => {
         if (ssmc.indexOf(normal) >= 0) {
             result = normal
@@ -26,10 +25,12 @@ const normalizeSSMC = (ssmc) => {
 
 const loadData = async (path, ipc) => {
     // 加载原始数据
-    srcData = []
+    
     let orginData = xlsx.parse(path)
     if (orginData[0].data[0][0] === 'nf') {
         // 导入的是本年度录取数据
+        console.log('本年度数据')
+        srcData = []
         let tableHeader = orginData[0].data[0]
         orginData[0].data.forEach((row, index, arr) => {
             if (index !== 0 && row[0] == 2018) { // 只导入2018年
@@ -50,9 +51,13 @@ const loadData = async (path, ipc) => {
         setProvinceBar(ipc)
     } else {
         // 导入的是历史数据
+        console.log('历史数据')
+        historyData = {}
         orginData[0].data.forEach((row, index, arr) => {
             if (index > 1) {
+                console.log(row)
                 let ssmc = normalizeSSMC(row[1])
+                console.log(ssmc)
                 if (!historyData[ssmc]) {historyData[ssmc]={
                     '985高校排名':[],
                     '文史类录取线':[],
@@ -69,12 +74,37 @@ const loadData = async (path, ipc) => {
                 '理工类录取线',
                 '理工类超本一线分数',
                 '理工类录取线省排名']
-                
-
-
+                type.forEach((e, i, a) => {
+                    historyData[ssmc][e].push(row[i+2] ? row[i+2] : null)
+                })
             }
         })
+        setHistory('江苏','985高校排名',ipc)
     }
+}
+
+const setHistory = async(ssmc, type, ipc) => {
+    let title = `${ssmc}${type}近五年(2014-2018)趋势`
+    let data = {}
+    switch (type) {
+        case '985高校排名':
+            data['985高校排名'] = historyData[ssmc]['985高校排名']
+            break
+        case '录取线':
+            data['文史类'] = historyData[ssmc]['文史类录取线']
+            data['理工类'] = historyData[ssmc]['理工类录取线']
+            break
+        case '录取线超本一线分值':
+            data['文史类'] = historyData[ssmc]['文史类超本一线分数']
+            data['理工类'] = historyData[ssmc]['理工类超本一线分数']
+            break
+        case '录取线省排名':
+            data['文史类'] = historyData[ssmc]['文史类录取线省排名']
+            data['理工类'] = historyData[ssmc]['理工类录取线省排名']
+            break
+    }
+    console.log(data)
+    ipc('set-history', {title, data})
 }
 
 const setPie = async (type, key, ipc) => {
@@ -239,31 +269,6 @@ const setZYBar = async(ipc) => {
     ipc('set-zy-bar', {finished, unfinished})
 }
 
-const setHistory = async(ssmc, ipc) => {
-    let ws = []
-    let lg = []
-    let years = ['2014', '2015', '2016', '2017']
-    years.forEach((year) => {
-        ws.push(history[ssmc][year]['文史'] === -1 ? null : history[ssmc][year]['文史'])
-        lg.push(history[ssmc][year]['理工'] === -1 ? null : history[ssmc][year]['理工'])
-    })
-    let wsList = srcData.filter((item, index, array) => {
-        return item.ssmc === ssmc && item.drlbdm === '01'
-    })
-    let lgList = srcData.filter((item, index, array) => {
-        return item.ssmc === ssmc && item.drlbdm === '02'
-    })
-    wsList.sort((a,b) => {
-        return b.cj - a.cj
-    })
-    lgList.sort((a,b) => {
-        return b.cj - a.cj
-    })
-    console.log(wsList)
-    ws.push(wsList.length > 0 ? wsList[wsList.length - 1].cj : null)
-    lg.push(lgList.length > 0 ? lgList[lgList.length - 1].cj : null)
 
-    ipc('set-history', {ws, lg, ssmc})
-}
 module.exports = { loadData, setPie, setMap, setProvinceBar ,setZYBar, setHistory}
 

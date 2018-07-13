@@ -129,7 +129,7 @@ function createMenu() {
       ]
     },
     {
-      label: '录取线省市',
+      label: '各省市指标趋势',
       submenu: submenu3
     },
   ]

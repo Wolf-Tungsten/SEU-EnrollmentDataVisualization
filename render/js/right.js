@@ -245,7 +245,3 @@ let option = {
   right.setOption(option)
 }
 
-setHistory('测试', {
-  '文科':[1, 5 ,4 ,3, 4],
-  '理科':[4,5,2,1,3]
-})

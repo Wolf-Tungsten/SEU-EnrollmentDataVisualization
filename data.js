@@ -107,6 +107,38 @@ const setHistory = async(ssmc, type, ipc) => {
     ipc('set-history', {title, data})
 }
 
+const setRank = async(type, ipc) => {
+    let data = []
+    ssmcList.forEach( (ssmc) => {
+        let provinceData = {}
+        switch (type) {
+            case '985高校排名':
+                provinceData[ssmc] = historyData[ssmc]['985高校排名']
+                break
+            case '文史类录取线':
+                provinceData[ssmc] = historyData[ssmc]['文史类录取线']
+                break
+            case '理工类录取线':
+                provinceData[ssmc] = historyData[ssmc]['理工类录取线']
+                break
+            case '文史类录取线超本一线分值':
+                provinceData[ssmc] = historyData[ssmc]['文史类超本一线分数']
+                break
+            case '理工类录取线超本一线分值':
+                provinceData[ssmc] = historyData[ssmc]['理工类超本一线分数']
+                break
+            case '文史类录取线省排名':
+                provinceData[ssmc] = historyData[ssmc]['文史类录取线省排名']
+                break
+            case '理工类录取线省排名':
+                provinceData[ssmc] = historyData[ssmc]['理工类录取线省排名']
+                break
+        }
+        data.push(provinceData)
+    })
+    ipc('set-rank', {type, data})
+}
+
 const setPie = async (type, key, ipc) => {
     key = '' + key // 强制转换字符串
     let xb = {male:0, female:0}
@@ -270,5 +302,5 @@ const setZYBar = async(ipc) => {
 }
 
 
-module.exports = { loadData, setPie, setMap, setProvinceBar ,setZYBar, setHistory}
+module.exports = { loadData, setPie, setMap, setProvinceBar ,setZYBar, setHistory, setRank}
 

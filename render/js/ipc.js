@@ -37,3 +37,8 @@ ipcRenderer.on('set-history', (_, message) => {
     setHistory(message.title, message.data)
     toggleBottom (false)
 })
+
+ipcRenderer.on('set-rank', (_, message) => {
+    setRank(message.type, message.data)
+    toggleBottom (false)
+})

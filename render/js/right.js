@@ -140,7 +140,6 @@ window.setProvinceBar = (finished, unfinished) => {
 
 window.setHistory = (title, data) => {
   right.clear()
-
   let series = []
   let color = ['#88DFF8', '#F2C94C']
   Object.keys(data).forEach((key, index, array) => {
@@ -241,6 +240,157 @@ let option = {
       }
   },
   series: series
+};
+  right.setOption(option)
+}
+
+
+window.setRank = (title, data) => {
+  right.clear()
+  let series = {}
+  let renderSeries = []
+  let years = ['2014', '2015', '2016', '2017', '2018']
+  years.forEach((year)=>{
+    series[year] = []
+  })
+  let xList = []
+  let color = ['rgba(255,100,100,0.8)', 'rgba(100,255,100,0.8)', 'rgba(100,100,255,0.8)', 'rgba(255,0,255,0.8)', 'rgba(255,255,0,0.8)']
+
+  data.forEach((item) => {
+    let ssmc = Object.keys(item)[0]
+    xList.push(ssmc)
+    years.forEach((year, index, arr) => {
+      series[year].push(item[ssmc][index])
+    })
+  })
+
+  console.log(series, xList)
+  years.forEach((year, index, arr) => {
+    renderSeries.push(
+      {
+        name:year,
+        type:'line',
+        connectNulls: true,
+        data:series[year],
+        smooth: true,
+        symbolSize:10,
+        label:{
+          position: [20, -20],
+          show: false,
+          color: '#FFF',
+          fontSize:20,
+          textShadowColor: 'rgba(255, 255, 255, 0.5)',
+          textShadowBlur: 10,
+          distance: 15
+        },
+        lineStyle:{
+          color:color[index],
+          width:3,
+          shadowColor: 'rgba(255, 255, 255, 0.5)',
+          shadowBlur: 5,
+        },
+        areaStyle: {
+          normal: {
+              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                  offset: 0.1,
+                  color: color[index]
+              }, {
+                  offset: 1,
+                  color: 'rgba(0,0,0,0)'
+              }])
+          }
+        }
+      }
+    )
+  })
+  
+let option = {
+  title: {
+    text: title,
+    left: 'center',
+    top: 15,
+    textStyle: {
+      color: '#f9f9f9'
+    }
+  },
+  grid: {
+    left: 100,
+    top: 100
+  },
+  tooltip: {
+      trigger: 'axis'
+  },
+  legend: {
+      data:Object.keys(series),
+      top: 50,
+      textStyle:{
+        color:'#F0f0f0',
+        fontSize:18
+      },
+      itemWidth:20,
+      itemHeight:20
+  },
+  xAxis:  {
+      type: 'category',
+      boundaryGap: false,
+      data: xList,
+      axisLine: {
+        lineStyle:{
+          color:'#F9F9F9',
+          width:2,
+          shadowColor: 'rgba(255, 255, 255, 0.5)',
+          shadowBlur: 10,
+        }
+      },
+      axisLabel :{
+        interval: 0,
+        color: '#ffffff',
+        shadowBlur: 50,
+        shadowColor: 'rgba(255, 255, 255, 0.5)', 
+        fontFamily: 'NotoSansSC-Regular',
+        fontSize: 16,
+        rotate: -45
+      },
+  },
+  yAxis: {
+      type: 'value',
+      axisLabel: {
+          formatter: '{value}',
+          fontSize: 18
+      },
+      scale:true,
+      axisLine: {
+        lineStyle:{
+          color:'#F9F9F9',
+          width:2,
+          shadowColor: 'rgba(255, 255, 255, 0.5)',
+          shadowBlur: 10,
+        }
+      }
+  },
+  dataZoom: [
+    {
+        show: true,
+        realtime: true,
+        start: 0,
+        end: 100,
+        textStyle : {
+          color: '#f0f0f0'
+        }
+    },
+    {
+        type: 'inside',
+        realtime: true,
+        start: 0,
+        end: 100
+    }
+  ],
+  series: renderSeries,
+  grid: {
+    left: 80,
+    top: 80,
+    bottom: 80
+  },
 };
   right.setOption(option)
 }

@@ -1,5 +1,5 @@
 const {app, BrowserWindow, globalShortcut, ipcMain, Menu} = require('electron')
-const {loadData, setPie, setMap, setProvinceBar, setZYBar, setHistory} = require('./data')
+const {loadData, setPie, setMap, setProvinceBar, setZYBar, setHistory, setRank} = require('./data')
 
 const ssmcList = require('./predefined-data/ssmc.json').ssmc
 const zymcList = Object.keys(require('./predefined-data/zymc2zydm.json'))
@@ -14,8 +14,8 @@ require('electron-reload')(__dirname);
 
 function createWindow () {
   // Create the browser window.
-  displayWindow = new BrowserWindow({ resizable:false, frame: false ,width: 1920, height: 1080, x:0, y:0, enableLargerThanScreen:true})
-  monitorWindow = new BrowserWindow({ title:'招生录取数据可视化', resizable:false, frame: true ,width:960,  minHeight:370, height:370,useContentSize:true , x:20, y:20, enableLargerThanScreen:true})
+  displayWindow = new BrowserWindow({ resizable:false, frame: false ,width: 1920, height: 1080, x:-1920, y:0, enableLargerThanScreen:true})
+  monitorWindow = new BrowserWindow({ title:'招生录取数据可视化', resizable:false, frame: true ,width:1536,  minHeight:580, height:580,useContentSize:true , enableLargerThanScreen:true})
   // and load the index.html of the app.
   displayWindow.loadFile('./render/index.html')
   monitorWindow.loadFile('./render/index.html')
@@ -25,7 +25,7 @@ function createWindow () {
   })
 
   monitorWindow.webContents.on('did-finish-load', () => {
-    monitorWindow.webContents.send('set-scale', {x:0.5, y:0.5})
+    monitorWindow.webContents.send('set-scale', {x:0.8, y:0.8})
   })
   
   // Open the DevTools.
@@ -104,6 +104,20 @@ function createMenu() {
       })
     })
   })
+
+  let submenu4 = []
+  let rankType = ['985高校排名','文史类录取线','理工类录取线','文史类录取线超本一线分值','理工类录取线超本一线分值','文史类录取线省排名','理工类录取线省排名']
+  rankType.forEach( (type) => {
+    submenu4.push({
+      label:type,
+      click:(a, b, c) => {
+        setRank(type, ipc)
+      }
+    })
+  })
+
+
+
   const template = [
     {
       label: '环状图切片',
@@ -131,6 +145,10 @@ function createMenu() {
     {
       label: '各省市指标趋势',
       submenu: submenu3
+    },
+    {
+      label: '指标省市视图',
+      submenu: submenu4
     },
   ]
 

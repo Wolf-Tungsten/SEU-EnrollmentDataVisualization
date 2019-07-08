@@ -1,6 +1,6 @@
 {
   "name": "seu-enrollment-data-visualization",
-  "productName":"东南大学2018年录取实时数据",
+  "productName": "东南大学2018年录取实时数据",
   "version": "1.0.0",
   "description": "东南大学2018年录取实时数据",
   "main": "main.js",

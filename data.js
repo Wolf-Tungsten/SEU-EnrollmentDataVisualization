@@ -25,7 +25,7 @@ const normalizeSSMC = (ssmc) => {
 
 const loadData = async (path, ipc) => {
     // 加载原始数据
-    
+    console.log("!!!!!")
     let orginData = xlsx.parse(path)
     if (orginData[0].data[0][0] === 'nf') {
         // 导入的是本年度录取数据
@@ -39,7 +39,7 @@ const loadData = async (path, ipc) => {
                     item[careKey] = row[tableHeader.indexOf(careKey)]
                 })
                 item.ssmc = normalizeSSMC(item.ssmc) //省市名称规整
-                console.log(item)
+                //console.log(item)
                 srcData.push(item)
             }
         })
@@ -55,9 +55,9 @@ const loadData = async (path, ipc) => {
         historyData = {}
         orginData[0].data.forEach((row, index, arr) => {
             if (index > 1) {
-                console.log(row)
+                //console.log(row)
                 let ssmc = normalizeSSMC(row[1])
-                console.log(ssmc)
+                //console.log(ssmc)
                 if (!historyData[ssmc]) {historyData[ssmc]={
                     '985高校排名':[],
                     '文史类录取线':[],
@@ -103,7 +103,7 @@ const setHistory = async(ssmc, type, ipc) => {
             data['理工类'] = historyData[ssmc]['理工类录取线省排名']
             break
     }
-    console.log(data)
+    //console.log(data)
     ipc('set-history', {title, data})
 }
 
@@ -144,7 +144,7 @@ const setPie = async (type, key, ipc) => {
     let xb = {male:0, female:0}
     let wl = {art:0, science:0}
     let mz = {hans:0, noHans:0}
-    console.log(key)
+    //console.log(key)
     if (type === 'ssmc') {
         srcData.forEach(item => {
             if ( item.ssmc.indexOf(key) >= 0 ) {
@@ -177,9 +177,9 @@ const setPie = async (type, key, ipc) => {
             }
         })
     }
-    console.log(xb)
-    console.log(mz)
-    console.log(wl)
+    //console.log(xb)
+    //console.log(mz)
+    //console.log(wl)
     ipc('set-pie', {province: key, xb, mz, wl})
 }
 

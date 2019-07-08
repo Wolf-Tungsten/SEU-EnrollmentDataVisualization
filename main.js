@@ -14,8 +14,8 @@ require('electron-reload')(__dirname);
 
 function createWindow () {
   // Create the browser window.
-  displayWindow = new BrowserWindow({ resizable:false, frame: false ,width: 1920, height: 1080, x:-1920, y:0, enableLargerThanScreen:true})
-  monitorWindow = new BrowserWindow({ title:'招生录取数据可视化', resizable:false, frame: true ,width:1536,  minHeight:580, height:580,useContentSize:true , enableLargerThanScreen:true})
+  displayWindow = new BrowserWindow({ resizable:false, frame: false ,width: 1920, height: 1080, x:-1920, y:0, enableLargerThanScreen:true, webPreferences:{nodeIntegration: true}})
+  monitorWindow = new BrowserWindow({ title:'招生录取数据可视化', resizable:false, frame: true ,width:1536,  minHeight:580, height:580,useContentSize:true , enableLargerThanScreen:true, webPreferences:{nodeIntegration: true}})
   // and load the index.html of the app.
   displayWindow.loadFile('./render/index.html')
   monitorWindow.loadFile('./render/index.html')
@@ -29,7 +29,7 @@ function createWindow () {
   })
   
   // Open the DevTools.
-  //monitorWindow.webContents.openDevTools()
+  monitorWindow.webContents.openDevTools()
 
   // Emitted when the window is closed.
   displayWindow.on('closed', function () {
@@ -154,7 +154,7 @@ function createMenu() {
 
   const menu = Menu.buildFromTemplate(template)
   monitorWindow.setMenu(menu)
-
+  Menu.setApplicationMenu(menu)
 
 }
 

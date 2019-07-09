@@ -10,8 +10,9 @@ ipcRenderer.on('set-scale', (_, message) => {
 
 ipcRenderer.on('set-pie', (_, message) => {
     setPie1(message.province, message.xb.male, message.xb.female)
-    setPie2(message.province, message.wl.art, message.wl.science,message.wl.other)
     setPie3(message.province, message.mz.hans, message.mz.noHans)
+    setPie2(message.province, message.lb.pt, message.lb.ts, message.lb.gjzx, message.lb.art)
+    
 })
 
 ipcRenderer.on('set-amount', (_, message) => {

@@ -100,20 +100,21 @@ window.setPie1 = (province, male, female) => {
   pie1.setOption(pieOption1)
 }
 
-window.setPie2 = (province, art, science, other) => {
+window.setPie2 = (province, pt, ts, gjzx,art) => {
   pie2.clear()
   if (province.length > 4) {province = province.slice(0,4) + '…'}
   let serial = [
-    { value: science, name: '理科', itemStyle: {color:'#FFD600'}},
-    { value: art, name: '文科',itemStyle:{color:'#AFD600'}},
-    { value: other, name: '其他'},
+    { value: pt, name: '普通类', itemStyle: {color:'#FFD600'}},
+    { value: ts, name: '特殊类',itemStyle:{color:'#AFD600'}},
+    { value: gjzx, name: '国家专项',itemStyle:{color:'#ABD600'}},
+    { value: art, name:'艺术'}
   ]
 
   let pieOption = {
     backgroundColor: 'rgba(0,0,0,0)',
 
     title: {
-      text: `${province}-文/理比例`,
+      text: `${province}-招生类型比例`,
       left: 'center',
       top: 15,
       textStyle: {
@@ -127,7 +128,7 @@ window.setPie2 = (province, art, science, other) => {
     },
     series: [
       {
-        name: '文理比例',
+        name: '招生类型比例',
         type: 'pie',
         radius: ['40%', '60%'],
         center: ['50%', '60%'],

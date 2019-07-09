@@ -1,5 +1,5 @@
-const {app, BrowserWindow, globalShortcut, ipcMain, Menu} = require('electron')
-const {loadData, setPie, setMap, setProvinceBar, setZYBar, setHistory, setRank} = require('./data')
+const { app, BrowserWindow, globalShortcut, ipcMain, Menu } = require('electron')
+const { loadData, setPie, setMap, setProvinceBar, setZYBar, setHistory, setRank } = require('./data')
 
 const ssmcList = require('./predefined-data/ssmc.json').ssmc
 const zymcList = Object.keys(require('./predefined-data/zymc2zydm.json'))
@@ -7,27 +7,26 @@ const drlbmcList = Object.keys(require('./predefined-data/drlbmc2drlbdm.json'))
 const zymc2zydm = require('./predefined-data/zymc2zydm.json')
 
 app.setName("招生录取数据可视化")
-let mainWindow
 let displayWindow
 let ipc
 require('electron-reload')(__dirname);
 
-function createWindow () {
+function createWindow() {
   // Create the browser window.
-  displayWindow = new BrowserWindow({ resizable:false, frame: false ,width: 1920, height: 1080, x:-1920, y:0, enableLargerThanScreen:true, webPreferences:{nodeIntegration: true}})
-  monitorWindow = new BrowserWindow({ title:'招生录取数据可视化', resizable:false, frame: true ,width:1536,  minHeight:580, height:580,useContentSize:true , enableLargerThanScreen:true, webPreferences:{nodeIntegration: true}})
+  displayWindow = new BrowserWindow({ resizable: false, frame: false, width: 1920, height: 1080, x: -1920, y: 0, enableLargerThanScreen: true, webPreferences: { nodeIntegration: true } })
+  monitorWindow = new BrowserWindow({ title: '招生录取数据可视化', resizable: false, frame: true, width: 1536, minHeight: 580, height: 580, useContentSize: true, enableLargerThanScreen: true, webPreferences: { nodeIntegration: true } })
   // and load the index.html of the app.
   displayWindow.loadFile('./render/index.html')
   monitorWindow.loadFile('./render/index.html')
 
   displayWindow.webContents.on('did-finish-load', () => {
-    displayWindow.webContents.send('set-scale', {x:1, y:1.5})
+    displayWindow.webContents.send('set-scale', { x: 1, y: 1.5 })
   })
 
   monitorWindow.webContents.on('did-finish-load', () => {
-    monitorWindow.webContents.send('set-scale', {x:0.8, y:0.8})
+    monitorWindow.webContents.send('set-scale', { x: 0.8, y: 0.8 })
   })
-  
+
   // Open the DevTools.
   monitorWindow.webContents.openDevTools()
 
@@ -54,24 +53,27 @@ function createWindow () {
 
 function createMenu() {
 
-  let submenu1 = [{label:'全国|全专业' ,role: '全国|全专业', 
-  click:(a,b,c) => {setPie('qg','全国',ipc)}
-},{type: 'separator'}]
+  let submenu1 = [{
+    label: '全国|全专业', role: '全国|全专业',
+    click: (a, b, c) => { setPie('qg', '全国', ipc) }
+  }, { type: 'separator' }]
+
+
   ssmcList.forEach(element => {
     submenu1.push({
-      label:element,
-      role:element,
-      click:(a, b, c) => {
+      label: element,
+      role: element,
+      click: (a, b, c) => {
         setPie('ssmc', element, ipc)
       }
     })
   })
-  submenu1.push({type: 'separator'})
+  submenu1.push({ type: 'separator' })
   zymcList.forEach(element => {
     submenu1.push({
-      label:element,
-      role:element,
-      click:(a, b, c) => {
+      label: element,
+      role: element,
+      click: (a, b, c) => {
         setPie('zydm', zymc2zydm[element], ipc)
       }
     })
@@ -80,20 +82,20 @@ function createMenu() {
   let submenu2 = []
   drlbmcList.forEach(element => {
     submenu2.push({
-      label:element,
-      role:element,
-      click:(a, b, c) => {
+      label: element,
+      role: element,
+      click: (a, b, c) => {
         setMap(element, ipc)
       }
     })
   })
 
   let submenu3 = []
-  let historyType = ['985高校排名','录取线','录取线超本一线分值','录取线省排名']
-  ssmcList.forEach( ssmc => {
+  let historyType = ['985高校排名', '录取线', '录取线超本一线分值', '录取线省排名']
+  ssmcList.forEach(ssmc => {
     submenu3.push({
-      label:ssmc,
-      role:ssmc,
+      label: ssmc,
+      role: ssmc,
       submenu: historyType.map((type, index, array) => {
         return {
           label: type,
@@ -106,11 +108,11 @@ function createMenu() {
   })
 
   let submenu4 = []
-  let rankType = ['985高校排名','文史类录取线','理工类录取线','文史类录取线超本一线分值','理工类录取线超本一线分值','文史类录取线省排名','理工类录取线省排名']
-  rankType.forEach( (type) => {
+  let rankType = ['985高校排名', '文史类录取线', '理工类录取线', '文史类录取线超本一线分值', '理工类录取线超本一线分值', '文史类录取线省排名', '理工类录取线省排名']
+  rankType.forEach((type) => {
     submenu4.push({
-      label:type,
-      click:(a, b, c) => {
+      label: type,
+      click: (a, b, c) => {
         setRank(type, ipc)
       }
     })
@@ -133,12 +135,12 @@ function createMenu() {
         {
           label: '省市视图',
           role: '省市视图',
-          click:async (a,b,c) => { await setProvinceBar(ipc)}
+          click: async (a, b, c) => { await setProvinceBar(ipc) }
         },
         {
           label: '专业视图',
           role: '专业视图',
-          click:async (a,b,c) => { await setZYBar(ipc)}
+          click: async (a, b, c) => { await setZYBar(ipc) }
         }
       ]
     },
@@ -159,9 +161,9 @@ function createMenu() {
 }
 
 function setListener() {
-    ipcMain.on('import-data', (_, path) => {
-      loadData(path, ipc)
-    })
+  ipcMain.on('import-data', (_, path) => {
+    loadData(path, ipc)
+  })
 }
 
 function onReady() {

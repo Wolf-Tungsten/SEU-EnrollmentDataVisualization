@@ -1,33 +1,36 @@
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <meta charset="UTF-8">
     <title>东南大学2019年录取实时数据</title>
     <!-- Insert this line above script imports  -->
-    <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
-    
-    <script src="js/jquery-3.3.1.min.js" ></script>
+    <script>if (typeof module === 'object') { window.module = module; module = undefined; }</script>
+
+    <script src="js/jquery-3.3.1.min.js"></script>
     <script src="js/echarts.js"></script>
     <script src="js/china.js"></script>
     <script>if (window.module) module = window.module;</script>
 
     <script>
-        if ($) { console.log ("jQuery is working")}
-        if (echarts) {console.log ("ECharts is working")}
+        if ($) { console.log("jQuery is working") }
+        if (echarts) { console.log("ECharts is working") }
     </script>
-    <link rel="stylesheet" href="css/index.css" type="text/css"/>
-  </head>
-  <body style="margin:0">
-      <div id="container" class="container" style="width: 1920px; height: 720px; transform-origin: 0 0 ; overflow: hidden;">
-          <div id="up">
+    <link rel="stylesheet" href="css/index.css" type="text/css" />
+</head>
+
+<body style="margin:0">
+    <div id="container" class="container"
+        style="width: 1920px; height: 720px; transform-origin: 0 0 ; overflow: hidden;">
+        <div id="up">
             <div id="time-container">
                 <span class="label-background text" style="margin-right:20px;">当前时间</span>
                 <span id="current-time" class="dashboard-text" style="width: 391px;">2018-00-00 00:30:23</span>
                 <script>
-                    setInterval(()=>{
+                    setInterval(() => {
                         let now = new Date()
-                        $('#current-time').text(`${now.getFullYear()}-${now.getMonth()+1 < 10 ? '0'+ (now.getMonth() + 1) : now.getMonth() + 1}-${now.getDate() < 10 ? '0'+ now.getDate(): now.getDate()} 
-                        ${now.getHours() < 10 ? '0'+ now.getHours() : now.getHours()}:${now.getMinutes() < 10 ? '0'+ now.getMinutes() : now.getMinutes()}:${now.getSeconds() < 10 ? '0' + now.getSeconds() : now.getSeconds()}`)
+                        $('#current-time').text(`${now.getFullYear()}-${now.getMonth() + 1 < 10 ? '0' + (now.getMonth() + 1) : now.getMonth() + 1}-${now.getDate() < 10 ? '0' + now.getDate() : now.getDate()} 
+                        ${now.getHours() < 10 ? '0' + now.getHours() : now.getHours()}:${now.getMinutes() < 10 ? '0' + now.getMinutes() : now.getMinutes()}:${now.getSeconds() < 10 ? '0' + now.getSeconds() : now.getSeconds()}`)
                     }, 1000)
                 </script>
             </div>
@@ -44,49 +47,68 @@
                     setFinishCount(0)
                 </script>
             </div>
-          </div>
-          <div id="bottom" style="width:1900px; height:615px; padding: 10px 10px 0 10px">
+        </div>
+        <div id="bottom" style="width:1900px; height:615px; padding: 10px 10px 0 10px">
             <div id="left" class="chart-background" style="height: 590px; width:250px;">
                 <div id="pie-1" style=" width:100%; height:196px"></div>
                 <div id="pie-2" style=" width:100%; height:196px"></div>
                 <div id="pie-3" style=" width:100%; height:197px"></div>
             </div>
-            <div id="middle"  style="height: 590px; width:615px; margin: 0 10px 0 10px">
+            <div id="middle" style="height: 590px; width:615px; margin: 0 10px 0 10px">
                 <div class="chart-background" style="height: 590px; width:615px;" id="map-container"></div>
             </div>
             <div id="right" class="chart-background" style="opacity:0; height: 590px; width:1005px">
                 <div style="height: 590px; width:1005px;" id="right-container"></div>
             </div>
-          </div>
-          <div id="map-legend" style="position:fixed; left:300px; top:580px;">
-              <div>
-                  <div class="legend">
-                    <div style="width:40px; height:30px; background-color: rgba(255, 255, 255, 0.2); border-radius: 3px;"></div><span>无计划</span>
-                  </div>
-                  <div  class="legend">
-                    <div style="width:40px; height:30px; background-color: rgba(255, 255, 255, 1); border-radius: 3px;"></div><span>未完成</span>
-                  </div>
-                  <div  class="legend">
-                    <div style="width:40px; height:30px; background-color: #27ae60; border-radius: 3px;"></div><span>已完成</span>
-                    </div>
+        </div>
+        <div id="map-legend" style="position:fixed; left:300px; top:580px;">
+            <div>
+                <div class="legend">
+                    <div
+                        style="width:40px; height:30px; background-color: rgba(255, 255, 255, 0.2); border-radius: 3px;">
+                    </div><span>无计划</span>
                 </div>
-          </div>
+                <div class="legend">
+                    <div style="width:40px; height:30px; background-color: rgba(255, 255, 255, 1); border-radius: 3px;">
+                    </div><span>未完成</span>
+                </div>
+                <div class="legend">
+                    <div style="width:40px; height:30px; background-color: #27ae60; border-radius: 3px;"></div>
+                    <span>已完成</span>
+                </div>
+            </div>
+        </div>
 
-        <div id="middle-right" class="chart-background" style="position:fixed; left:275px; top:105px; height: 590px; width:1630px">
+        <div id="middle-right" class="chart-background"
+            style="position:fixed; left:275px; top:105px; height: 590px; width:1630px">
             <div style="height: 590px; width:1630px;" id="middle-right-container"></div>
         </div>
-      </div>
-  </body>
+    </div>
+</body>
 <script>
-    window.toggleBottom = (middleRight) => {
-        ['#right', '#middle', '#map-legend'].forEach(element => {
-            $(element).css('opacity', middleRight ? '0' : '1')
-            $(element).css('z-index', middleRight ? '0' : '1')
-        })
-        $('#middle-right').css('opacity', middleRight ? '1' : '0')
-        $('#middle-right').css('z-index', middleRight ? '1' : '0')
+    window.toggleBottom = (type) => {
+        //定义界面显示类型
+        //rigthMiddleLeft 左中右三部分
+        //rightLeft 左右两部分
+        if (type === 'rigthMiddleLeft') {
+            ['#right', '#middle', '#map-legend'].forEach(element => {
+                $(element).css('opacity', '1')
+                $(element).css('z-index', '1')
+            })
+            $('#middle-right').css('opacity', '0')
+            $('#middle-right').css('z-index', '0')
+        }
+        if (type === 'rightLeft'){
+            ['#right', '#middle', '#map-legend'].forEach(element => {
+                $(element).css('opacity', '0')
+                $(element).css('z-index', '0')
+            })
+            $('#middle-right').css('opacity', '1')
+            $('#middle-right').css('z-index', '1')
+        }
+
     }
-    toggleBottom (false)
+    toggleBottom('rigthMiddleLeft')
 </script>
 <script src="js/pie.js"></script>
 <script src="js/map.js"></script>
@@ -94,4 +116,6 @@
 <script src="js/middle-right.js"></script>
 <script src="js/ipc.js"></script>
 <script src="js/drag-drop.js"></script>
+<script src="js/dom-to-image.js"></script>
 </html>
+

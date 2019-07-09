@@ -10,7 +10,7 @@ ipcRenderer.on('set-scale', (_, message) => {
 
 ipcRenderer.on('set-pie', (_, message) => {
     setPie1(message.province, message.xb.male, message.xb.female)
-    setPie2(message.province, message.wl.art, message.wl.science)
+    setPie2(message.province, message.wl.art, message.wl.science,message.wl.other)
     setPie3(message.province, message.mz.hans, message.mz.noHans)
 })
 
@@ -20,25 +20,25 @@ ipcRenderer.on('set-amount', (_, message) => {
 
 ipcRenderer.on('set-map', (_, message)=>{
     setMap(`${message.drlbmc}`,message.own, message.finished)
-    toggleBottom (false)
+    toggleBottom ('rigthMiddleLeft')
 })
 
 ipcRenderer.on('set-province-bar', (_, message)=>{
     setProvinceBar(message.finished, message.unfinished)
-    toggleBottom (false)
+    toggleBottom ('frigthMiddleLeft')
 })
 
 ipcRenderer.on('set-zy-bar', (_, message)=>{
     setZYBar(message.finished, message.unfinished)
-    toggleBottom (true)
+    toggleBottom ('rightLeft')
 })
 
 ipcRenderer.on('set-history', (_, message) => {
     setHistory(message.title, message.data)
-    toggleBottom (false)
+    toggleBottom ('rigthMiddleLeft')
 })
 
 ipcRenderer.on('set-rank', (_, message) => {
     setRank(message.type, message.data)
-    toggleBottom (false)
+    toggleBottom ('rightLeft')
 })

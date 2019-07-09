@@ -8,7 +8,7 @@ const drlbmc2drlbdm = require('./predefined-data/drlbmc2drlbdm.json')
 const drlbdm2ssmc = require('./predefined-data/drlbdm2ssmc.json')
 const ssjhs = require('./predefined-data/ssjhs.json')
 const zyjhs = require('./predefined-data/zyjhs.json')
-const history = require('./predefined-data/history.json')
+//const history = require('./predefined-data/history.json')
 
 const keyList = ['nf','ssmc','drlbdm','xbmc','mzmc','klmc','cj','zydm']
 let srcData
@@ -142,7 +142,7 @@ const setRank = async(type, ipc) => {
 const setPie = async (type, key, ipc) => {
     key = '' + key // 强制转换字符串
     let xb = {male:0, female:0}
-    let wl = {art:0, science:0}
+    let wl = {art:0, science:0, other:200}
     let mz = {hans:0, noHans:0}
     //console.log(key)
     if (type === 'ssmc') {

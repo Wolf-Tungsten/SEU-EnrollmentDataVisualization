@@ -1,3 +1,5 @@
+
+
 const pieOptionTemplate = {
   backgroundColor: 'rgba(0,0,0,1)',
 
@@ -98,12 +100,13 @@ window.setPie1 = (province, male, female) => {
   pie1.setOption(pieOption1)
 }
 
-window.setPie2 = (province, art, science) => {
+window.setPie2 = (province, art, science, other) => {
   pie2.clear()
   if (province.length > 4) {province = province.slice(0,4) + '…'}
   let serial = [
     { value: science, name: '理科', itemStyle: {color:'#FFD600'}},
-    { value: art, name: '文科'}
+    { value: art, name: '文科',itemStyle:{color:'#AFD600'}},
+    { value: other, name: '其他'},
   ]
 
   let pieOption = {

@@ -34,6 +34,11 @@ ipcRenderer.on('set-zy-bar', (_, message)=>{
     toggleBottom ('rightLeft')
 })
 
+ipcRenderer.on('set-college-bar', (_, message)=>{
+    setCollegeBar(message.finished, message.unfinished)
+    toggleBottom ('rightLeft')
+})
+
 ipcRenderer.on('set-history', (_, message) => {
     setHistory(message.title, message.data)
     toggleBottom ('rigthMiddleLeft')

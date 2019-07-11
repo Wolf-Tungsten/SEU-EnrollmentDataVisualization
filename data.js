@@ -3,15 +3,18 @@ const xlsx = require('node-xlsx')
 const zydm2zymc = require('./predefined-data/zydm2zymc.json')
 const zymc2zydm = require('./predefined-data/zymc2zydm.json')
 const ssmcList = require('./predefined-data/ssmc.json').ssmc
-const zymcList = require('./predefined-data/zymcList.json').zymc
+const dlzyList = require('./predefined-data/dlzyList.json')
 const drlbmc2drlbdm = require('./predefined-data/drlbmc2drlbdm.json')
 const drlbdm2ssmc = require('./predefined-data/drlbdm2ssmc.json')
 const ssjhs = require('./predefined-data/ssjhs.json')
 const zyjhs = require('./predefined-data/zyjhs.json')
 const lbList = require('./predefined-data/drlbdm2lb.json')
+const drlbdm2lb = require('./predefined-data/drlbdm2lb.json')
+const collegeList = require('./predefined-data/collegeList.json')
+const xyjhs = require('./predefined-data/xyjhs.json')
 //const history = require('./predefined-data/history.json')
 
-const keyList = ['nf', 'ssmc', 'drlbdm', 'xbmc', 'mzmc', 'klmc', 'cj', 'zymc']
+const keyList = ['nf', 'ssmc', 'drlbdm', 'xbmc', 'mzmc', 'klmc', 'cj', 'zymc', 'yxmc']
 let srcData
 let historyData
 const normalizeSSMC = (ssmc) => {
@@ -40,14 +43,13 @@ const loadData = async (path, ipc) => {
                     item[careKey] = row[tableHeader.indexOf(careKey)]
                 })
                 item.ssmc = normalizeSSMC(item.ssmc) //省市名称规整
-                console.log("item")
-                console.log(item)
+              
                 srcData.push(item)
             }
         })
-        console.log(srcData)
+        //console.log(srcData)
         //console.log(srcData.length)
-        //console.log(srcData[0])
+        console.log(srcData[0])
         // 开始初始数据渲染
         ipc('set-amount', { amount: srcData.length })
         setPie('qg', '全国', ipc)
@@ -253,31 +255,15 @@ const setMap = async (drlbmc, ipc) => {
 const setProvinceBar = async (ipc) => {
     let unfinished = { '未完成': [] }
     let finished = { '已完成': [] }
-    // Object.keys(zymc2zydm).forEach((zymc) => {
-    //     unfinished[zymc] = []
-    //     finished[zymc] = []
-    // })
-    // Object.keys(zydm2zymc).forEach((zydm)=>{
-    //     let zymc = zydm2zymc[zydm]
-    //     ssmcList.forEach( (ssmc) => {
-    //         let finishedList = srcData.filter( (item, index, array) => {
-    //             return item.ssmc === ssmc && item.zydm === zydm
-    //         })
-    //         finished[zymc].push(finishedList.length)
-    //         let amount = ssjhs[ssmc][zydm]
-    //         if (amount) {
-    //             unfinished[zymc].push(finishedList.length - amount)
-    //         } else {
-    //             unfinished[zymc].push(0)
-    //         }
-    //     })
-    // })
+
     ssmcList.forEach((ssmc) => {
-        let amount = ssjhs[ssmc].amount
+        let amount = ssjhs[ssmc]['amount']
         let count = srcData.filter((item, index, value) => {
-            return item.ssmc === ssmc
+            //根据省份，和导入代码进行过滤
+            return (item.ssmc === ssmc && drlbdm2lb[item.drlbdm] === "普通类")
         }).length
-        let unfinishedCount = amount - count > 0 ? amount - count : 0
+        
+        let unfinishedCount = amount - count 
         finished['已完成'].push(count)
         unfinished['未完成'].push(unfinishedCount)
     })
@@ -288,36 +274,12 @@ const setZYBar = async (ipc) => {
     let unfinished = { '未完成': [] }
     let finished = { '已完成': [] }
 
-    // ssmcList.forEach ( (ssmc) => {
-    //     unfinished[ssmc] = []
-    //     finished[ssmc] = []
-    // })
 
-    // ssmcList.forEach ( (ssmc) => {
-    //     zymcList.forEach ((zymc) => {
-    //         if (zymc.indexOf('预科班') === -1) {
-    //         let zydm = zymc2zydm[zymc]
-
-    //         let finishedList = srcData.filter( (item, index, array) => {
-    //             return item.ssmc === ssmc && item.zydm === zydm
-    //         })
-    //         let amount = zyjhs[zydm][ssmc]
-    //         finished[ssmc].push(finishedList.length)
-    //         if (amount) {
-    //             unfinished[ssmc].push(finishedList.length - amount)
-    //         } else {
-    //             unfinished[ssmc].push(0)
-    //         }
-    //     }
-    //     })
-    // })
-
-    zymcList.forEach((zymc) => {
+    dlzyList.forEach((zymc) => {
         if (zymc.indexOf('预科班') === -1) {
-            let zydm = zymc2zydm[zymc]
-            let amount = zyjhs[zydm].amount
+            let amount = zyjhs[zymc]['amount']
             let finishedCount = srcData.filter((item, index, array) => {
-                return item.zydm === zydm
+                return item.zymc === zymc && drlbdm2lb[item.drlbdm] === "普通类"
             }).length
             let unfinishedCount = amount - finishedCount > 0 ? amount - finishedCount : 0
             finished['已完成'].push(finishedCount)
@@ -326,15 +288,37 @@ const setZYBar = async (ipc) => {
     })
     ipc('set-zy-bar', { finished, unfinished })
 }
+const setCollegeBar = async (ipc) =>{
+    let unfinished = { '未完成': [] }
+    let finished = { '已完成': [] }
 
+    collegeList.forEach((college) => {
+        let amount = xyjhs[college]
+        //console.log(college)
+        //console.log(amount)
+        let finishedCount = srcData.filter((item,index,array)=>{
+            return item.yxmc === college
+        }).length
+        console.log(finishedCount)
+
+        let unfinishedCount = amount - finishedCount  
+        finished['已完成'].push(finishedCount)
+        unfinished['未完成'].push(unfinishedCount)
+    })
+    
+    ipc('set-college-bar', { finished, unfinished })
+
+}
 const setGrade = async (type, ipc) => {
     //type 大类专业名称
     data = {}
+    //按照省市
     ssmcList.forEach(ele => {
         data[ele] = []
     })
     srcData.forEach(item => {
-        if (item['zymc'] === type) {
+        //表中数据zymc有空格和中文括号
+        if (item['zymc'].split(" ").join("").replace( /[（]/g,"(").replace(/[）]/g,")") === type) {
             data[item['ssmc']].push(item['cj'])
         }
 
@@ -344,5 +328,5 @@ const setGrade = async (type, ipc) => {
     ipc('set-grade', { type, data })
 }
 
-module.exports = { loadData, setPie, setMap, setProvinceBar, setZYBar, setHistory, setRank, setGrade }
+module.exports = { loadData, setPie, setMap, setProvinceBar, setZYBar, setHistory, setRank, setGrade,setCollegeBar}
 

@@ -1,5 +1,5 @@
 const { app, BrowserWindow, globalShortcut, ipcMain, Menu } = require('electron')
-const { loadData, setPie, setMap, setProvinceBar, setZYBar, setHistory, setRank, setGrade} = require('./data')
+const { loadData, setPie, setMap, setProvinceBar, setZYBar, setHistory, setRank, setGrade,setCollegeBar} = require('./data')
 
 const ssmcList = require('./predefined-data/ssmc.json').ssmc
 const zymcList = Object.keys(require('./predefined-data/zymc2zydm.json'))
@@ -113,7 +113,12 @@ function createMenu() {
   subCollege = collegeList
   subSubMenu = []
   subCollege.forEach(college =>{
-    subSubMenu.push({label:college})
+    subSubMenu.push({
+      label:college,
+      click: (a, b, c) =>{
+        setCollegeBar(college, ipc)
+      }
+    })
   })
 
   
@@ -164,10 +169,9 @@ function createMenu() {
           click: async (a, b, c) => { await setZYBar(ipc) }
         },
         {
-          label:'生源视图',
-          role:'生源视图',
-          //click: async (a, b, c) => { await setZYBar(ipc) }
-          submenu:subSubMenu
+          label:'学院视图',
+          role:'学院视图',
+          click: async (a, b, c) => { await setCollegeBar(ipc) }
         }
       ]
     },

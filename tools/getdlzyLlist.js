@@ -8,7 +8,10 @@ srcData = srcData[0]['data']
 title = srcData[0]
 body = []
 srcData.forEach((element,index)=>{
-    if((index != 0)&&element[0]){
+    if((index !== 0)&&element[0]){
+        
+        console.log(element[0])
+        element[0] = element[0].split(" ").join("").replace( /[（]/g,"(").replace(/[）]/g,")")
         body.push(element[0])
     }
 })

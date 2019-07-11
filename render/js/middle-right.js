@@ -317,7 +317,6 @@ window.setGrade = (type, data) => {
   middleRight.clear()
 
   let srcData = data
-  let categories = ssmc;
   let types = [
     { name: 'MinGrade', color: '#0ce8aa' },
     { name: 'MaxGrade', color: '#de320b' },
@@ -346,7 +345,7 @@ window.setGrade = (type, data) => {
           ],
           itemStyle: {
             normal: {
-              color: '#f2da1f'
+              color: '#ffffff'
             }
           }
         })
@@ -361,7 +360,7 @@ window.setGrade = (type, data) => {
           ],
           itemStyle: {
             normal: {
-              color: '#f2da1f'
+              color: '#ffffff'
             }
           }
         })
@@ -376,7 +375,7 @@ window.setGrade = (type, data) => {
           ],
           itemStyle: {
             normal: {
-              color: 'f2da1f'
+              color: '#f2da1f'
             }
           }
         })
@@ -384,7 +383,7 @@ window.setGrade = (type, data) => {
     })
   })
 
-  console.log(detailData)
+  //console.log(detailData)
   
   function renderItem(params, api) {
     var categoryIndex = api.value(0);
@@ -571,6 +570,7 @@ window.setCollegeBar = (finished, unfinished) => {
   xymc.forEach((ele, index) => {
     if (finished[index] > xyjhs[ele]) {
       data1.push({
+        name:'完成',
         value: finished[index],
         itemStyle: {
           color: '#EB5757'
@@ -578,6 +578,7 @@ window.setCollegeBar = (finished, unfinished) => {
       })
     } else {
       data1.push({
+        name:'完成',
         value: finished[index],
         itemStyle: {
           color: '#2F80ED'
@@ -590,17 +591,32 @@ window.setCollegeBar = (finished, unfinished) => {
   let data2 = []
   //未完成
   xymc.forEach((ele, index) => {
-    data2.push({
-      value: unfinished[index],
-      itemStyle:{
-        color: '#FFFFFF'
-      }
-    })
+    if(unfinished[index]>0){
+      data2.push({
+        name:'未完成',
+        value: unfinished[index],
+        itemStyle:{
+          color: '#FFFFFF'
+        }
+      })
+    }else{
+      data2.push({
+        name:'超标',
+        value: unfinished[index],
+        itemStyle:{
+          color: '#bdbdbd'
+        },
+        tooltip:{
+          formatter:function(params,tiket,callback){
+            return params.marker + '超标:' + (-params['value'])
+          }
+        }
+      })
+    }
   })
 
 
   let series1 = {
-    name: 'fininsh',
     type: 'bar',
     stack: 'one',
     itemStyle: itemStyle,
@@ -608,7 +624,6 @@ window.setCollegeBar = (finished, unfinished) => {
   }
 
   let series2 = {
-    name: 'unfinuished',
     type: 'bar',
     stack: 'one',
     itemStyle: itemStyle,
@@ -619,40 +634,7 @@ window.setCollegeBar = (finished, unfinished) => {
   series.push(series1)
   series.push(series2)
 
-  console.log(series)
-  /*
-  for (let xymc in finished) {
-    
-    if(finished[xymc] > xyjhs[xymc]){
-      serial.push({
-        name: xymc,
-        type: 'bar',
-        stack: 'one',
-        itemStyle: itemStyle,
-        data: finished[xymc]
-      })
-    }else{
-      serial.push({
-        name: xymc,
-        type: 'bar',
-        stack: 'one',
-        itemStyle: itemStyle,
-        data: finished[xymc]
-      })
-    }
-  }
-  */
-  /*
-  for (let xymc in unfinished) {
-    serial.push({
-      name: ssmc,
-      type: 'bar',
-      stack: 'one',
-      itemStyle: unfinishedStyle,
-      data: unfinished[ssmc]< 0 ? 0 : unfinished[ssmc]
-    })
-  }
-  */
+  //console.log(series)
   let option = {
     title: {
       text: `专业完成进度统计`,

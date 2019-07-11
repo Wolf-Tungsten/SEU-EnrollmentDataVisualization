@@ -26,7 +26,7 @@ ipcRenderer.on('set-map', (_, message)=>{
 
 ipcRenderer.on('set-province-bar', (_, message)=>{
     setProvinceBar(message.finished, message.unfinished)
-    toggleBottom ('frigthMiddleLeft')
+    toggleBottom ('rigthMiddleLeft')
 })
 
 ipcRenderer.on('set-zy-bar', (_, message)=>{
@@ -41,5 +41,11 @@ ipcRenderer.on('set-history', (_, message) => {
 
 ipcRenderer.on('set-rank', (_, message) => {
     setRank(message.type, message.data)
+    toggleBottom ('rightLeft')
+})
+ipcRenderer.on('set-grade',(_,message) =>{
+    console.log(message.type)
+    console.log(message.data)
+    setGrade(message.type)
     toggleBottom ('rightLeft')
 })

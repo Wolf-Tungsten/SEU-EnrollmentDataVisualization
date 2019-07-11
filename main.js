@@ -1,10 +1,12 @@
 const { app, BrowserWindow, globalShortcut, ipcMain, Menu } = require('electron')
-const { loadData, setPie, setMap, setProvinceBar, setZYBar, setHistory, setRank } = require('./data')
+const { loadData, setPie, setMap, setProvinceBar, setZYBar, setHistory, setRank, setGrade} = require('./data')
 
 const ssmcList = require('./predefined-data/ssmc.json').ssmc
 const zymcList = Object.keys(require('./predefined-data/zymc2zydm.json'))
 const drlbmcList = Object.keys(require('./predefined-data/drlbmc2drlbdm.json'))
 const zymc2zydm = require('./predefined-data/zymc2zydm.json')
+const dlzyList = require('./predefined-data/dlzyList.json')
+const collegeList = require('./predefined-data/collegeList.json')
 
 app.setName("招生录取数据可视化")
 let displayWindow
@@ -106,7 +108,14 @@ function createMenu() {
       })
     })
   })
+  
+  subCollege = collegeList
+  subSubMenu = []
+  subCollege.forEach(college =>{
+    subSubMenu.push({label:college})
+  })
 
+  console.log(subSubMenu)
   let submenu4 = []
   let rankType = ['985高校排名', '文史类录取线', '理工类录取线', '文史类录取线超本一线分值', '理工类录取线超本一线分值', '文史类录取线省排名', '理工类录取线省排名']
   rankType.forEach((type) => {
@@ -118,8 +127,20 @@ function createMenu() {
     })
   })
 
+  let submenu5 = []
+  //大类专业
+  dlzyList.forEach((type)=>{
+    submenu5.push({
+      label:type,
+      click: (a, b, c) => {
+        console.log(type)
+        setGrade(type, ipc)
+      }
+    })
+  })
 
 
+  let submenu6 = []
   const template = [
     {
       label: '环状图切片',
@@ -141,6 +162,12 @@ function createMenu() {
           label: '专业视图',
           role: '专业视图',
           click: async (a, b, c) => { await setZYBar(ipc) }
+        },
+        {
+          label:'生源视图',
+          role:'生源视图',
+          //click: async (a, b, c) => { await setZYBar(ipc) }
+          submenu:subSubMenu
         }
       ]
     },
@@ -151,6 +178,10 @@ function createMenu() {
     {
       label: '指标省市视图',
       submenu: submenu4
+    },
+    {
+      label: '成绩分布视图',
+      submenu: submenu5
     },
   ]
 

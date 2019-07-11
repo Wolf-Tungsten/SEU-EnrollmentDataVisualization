@@ -106,7 +106,7 @@ window.setPie2 = (province, pt, ts, gjzx,art) => {
   let serial = [
     { value: pt, name: '普通类', itemStyle: {color:'#FFD600'}},
     { value: ts, name: '特殊类',itemStyle:{color:'#AFD600'}},
-    { value: gjzx, name: '国家专项',itemStyle:{color:'#ABD600'}},
+    { value: gjzx, name: '国家专项',itemStyle:{color:'#ACD600'}},
     { value: art, name:'艺术'}
   ]
 

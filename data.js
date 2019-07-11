@@ -325,6 +325,12 @@ const setZYBar = async (ipc) => {
     ipc('set-zy-bar', { finished, unfinished })
 }
 
+const setGrade = async (type,ipc) =>{
 
-module.exports = { loadData, setPie, setMap, setProvinceBar, setZYBar, setHistory, setRank }
+    //数据处理
+    data = 0
+    ipc('set-grade',{type,data})
+}
+
+module.exports = { loadData, setPie, setMap, setProvinceBar, setZYBar, setHistory, setRank, setGrade }
 

@@ -4,6 +4,10 @@ const ssmcList = ["北京","天津","河北","山西","内蒙古","辽宁","吉�
 
 window.setProvinceBar = (finished, unfinished) => {
   right.clear()
+  
+  //根据各个省市的招生指标显示不同的样式
+
+  //人数完成样式 
   let itemStyle = {
     shadowColor: 'rgba(255, 255, 255, 0.5)',
     shadowBlur: 5,
@@ -18,7 +22,8 @@ window.setProvinceBar = (finished, unfinished) => {
       shadowColor: 'rgba(0,0,0,0)'
     }
   };
-
+  
+  //人数未完成样式
   let unfinishedStyle = {
     shadowColor: 'rgba(255, 255, 255, 0.5)',
     shadowBlur: 5,
@@ -33,6 +38,21 @@ window.setProvinceBar = (finished, unfinished) => {
       shadowColor: 'rgba(0,0,0,0.5)'
     }
   };
+  
+  //人数超标样式
+  let excessStyle = {
+    normal:{
+      coloe: '#EB5757'
+    },
+    emphasis: {
+      barBorderWidth: 1,
+      shadowBlur: 10,
+      shadowOffsetX: 0,
+      shadowOffsetY: 0,
+      shadowColor: 'rgba(0,0,0,0.5)'
+    }
+  }
+
 
   let serial = []
   for (let zymc in finished) {

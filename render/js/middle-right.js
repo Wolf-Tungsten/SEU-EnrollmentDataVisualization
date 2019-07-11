@@ -3,6 +3,10 @@ const zymcList = ["文科试验班", "工科试验班", "经济学", "英语", "
 const ssmc = ["北京","天津","河北","山西","内蒙古","辽宁","吉林","黑龙江","上海","江苏","浙江","安徽","福建","江西","山东","河南","湖北","湖南","广东","广西","海南","重庆","四川","贵州","云南","西藏","陕西","甘肃","青海","宁夏","新疆"]
 window.setZYBar = (finished, unfinished) => {
   middleRight.clear()
+  
+  //根据大类专业招生计划显示不同的样式
+
+  //完成样式
   let itemStyle = {
     normal: {
       color: '#2F80ED',
@@ -15,7 +19,8 @@ window.setZYBar = (finished, unfinished) => {
       shadowColor: 'rgba(0,0,0,0)'
     }
   };
-
+  
+  //人数未完成的样式
   let unfinishedStyle = {
     normal: {
       color: '#FFFFFF',
@@ -28,6 +33,20 @@ window.setZYBar = (finished, unfinished) => {
       shadowColor: 'rgba(0,0,0,0.5)'
     }
   };
+  
+  //人数超标的样式
+  let excessStyle = {
+    normal:{
+      coloe: '#EB5757'
+    },
+    emphasis: {
+      barBorderWidth: 1,
+      shadowBlur: 10,
+      shadowOffsetX: 0,
+      shadowOffsetY: 0,
+      shadowColor: 'rgba(0,0,0,0.5)'
+    }
+  }
 
   let serial = []
   for (let ssmc in finished) {
@@ -41,13 +60,13 @@ window.setZYBar = (finished, unfinished) => {
   }
 
   for (let ssmc in unfinished) {
-    serial.push({
-      name: ssmc,
-      type: 'bar',
-      stack: 'one',
-      itemStyle: unfinishedStyle,
-      data: unfinished[ssmc]
-    })
+      serial.push({
+        name: ssmc,
+        type: 'bar',
+        stack: 'one',
+        itemStyle: unfinishedStyle,
+        data: unfinished[ssmc]
+      })
   }
 
   let option = {

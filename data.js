@@ -279,9 +279,10 @@ const setZYBar = async (ipc) => {
         if (zymc.indexOf('预科班') === -1) {
             let amount = zyjhs[zymc]['amount']
             let finishedCount = srcData.filter((item, index, array) => {
+                item.zymc = item.zymc.split(" ").join("").replace( /[（]/g,"(").replace(/[）]/g,")")
                 return item.zymc === zymc && drlbdm2lb[item.drlbdm] === "普通类"
             }).length
-            let unfinishedCount = amount - finishedCount > 0 ? amount - finishedCount : 0
+            let unfinishedCount = amount - finishedCount 
             finished['已完成'].push(finishedCount)
             unfinished['未完成'].push(unfinishedCount)
         }

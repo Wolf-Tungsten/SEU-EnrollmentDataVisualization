@@ -28,6 +28,7 @@ const xyjhs = {
   "艺术学院": 90,
   "外国语学院": 95
 }
+const zyjhsSimple = {"建筑类":121,"工科试验班(吴健雄班)":95,"工科试验班(机械能源材料类)":464,"工科试验班(土木交通类)":483,"工科试验班(自动化电气测控类)":342,"工科试验班(环境化工生物类)":121,"电子信息类":346,"电子信息类(无锡)":70,"计算机类":287,"理科试验班":204,"工商管理类":195,"经济学类":72,"文科试验班类":187,"临床医学类":106,"预防医学":38,"设计学类":89,"临床医学(5+3一体化培养)":119,"生物医学工程(七年制)":29,"英语":46,"日语":30}
 window.setZYBar = (finished, unfinished) => {
   middleRight.clear()
 
@@ -75,26 +76,76 @@ window.setZYBar = (finished, unfinished) => {
     }
   }
 
-  let serial = []
-  for (let ssmc in finished) {
-    serial.push({
-      name: ssmc,
-      type: 'bar',
-      stack: 'one',
-      itemStyle: itemStyle,
-      data: finished[ssmc]
-    })
+  finished = finished['已完成']
+  unfinished = unfinished['未完成']
+
+  //已完成
+  let data1 = []
+  zymcList.forEach((ele,index)=>{
+    if (finished[index] > zyjhsSimple[ele]) {
+      data1.push({
+        name:'完成',
+        value: finished[index],
+        itemStyle: {
+          color: '#EB5757'
+        }
+      })
+    } else {
+      data1.push({
+        name:'完成',
+        value: finished[index],
+        itemStyle: {
+          color: '#2F80ED'
+        }
+      })
+    }
+  })
+  
+  //未完成
+  let data2 = []
+  zymcList.forEach((ele,index)=>{
+    if(unfinished[index]>0){
+      data2.push({
+        name:'未完成',
+        value: unfinished[index],
+        itemStyle:{
+          color: '#FFFFFF'
+        }
+      })
+    }else{
+      data2.push({
+        name:'超标',
+        value: unfinished[index],
+        itemStyle:{
+          color: '#bdbdbd'
+        },
+        tooltip:{
+          formatter:function(params,tiket,callback){
+            return params.marker + '超标:' + (-params['value'])
+          }
+        }
+      })
+    }
+  })
+
+  let series1 = {
+    type: 'bar',
+    stack: 'one',
+    itemStyle: itemStyle,
+    data: data1
   }
 
-  for (let ssmc in unfinished) {
-    serial.push({
-      name: ssmc,
-      type: 'bar',
-      stack: 'one',
-      itemStyle: unfinishedStyle,
-      data: unfinished[ssmc] < 0 ? 0 : unfinished[ssmc]
-    })
+  let series2 = {
+    type: 'bar',
+    stack: 'one',
+    itemStyle: itemStyle,
+    data: data2
   }
+
+  let series = []
+  series.push(series1)
+  series.push(series2)
+
 
   let option = {
     title: {
@@ -155,7 +206,7 @@ window.setZYBar = (finished, unfinished) => {
       top: 80,
       bottom: 80
     },
-    series: serial
+    series: series
   }
   middleRight.setOption(option)
 }
@@ -515,8 +566,7 @@ window.setCollegeBar = (finished, unfinished) => {
   finished = finished['已完成']
   unfinished = unfinished['未完成']
 
-  console.log(unfinished)
-  console.log(finished)
+  
 
   //console.log(finished)
   //console.log(unfinished)

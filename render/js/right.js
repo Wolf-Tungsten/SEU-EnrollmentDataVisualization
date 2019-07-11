@@ -1,11 +1,13 @@
 const right = echarts.init(document.getElementById('right-container'))
 const ssmcList = ["北京","天津","河北","山西","内蒙古","辽宁","吉林","黑龙江","上海","江苏","浙江","安徽","福建","江西","山东","河南","湖北","湖南","广东","广西","海南","重庆","四川","贵州","云南","西藏","陕西","甘肃","青海","宁夏","新疆"]
-
+const ssjhssimple = {"北京":46,"天津":70,"河北":160,"山西":142,"内蒙古":66,"辽宁":65,"吉林":42,"黑龙江":46,"上海":43,"江苏":614,"浙江":146,"安徽":272,"福建":101,"江西":100,"山东":162,"河南":227,"湖北":112,"湖南":118,"广东":86,"广西":71,"海南":36,"重庆":104,"四川":140,"贵州":94,"云南":75,"西藏":5,"陕西":102,"甘肃":70,"青海":46,"宁夏":40,"新疆":43}
 
 window.setProvinceBar = (finished, unfinished) => {
   right.clear()
+
+  finished = finished['已完成']
+  unfinished = unfinished['未完成']
   
-  //根据各个省市的招生指标显示不同的样式
 
   //人数完成样式 
   let itemStyle = {
@@ -52,28 +54,73 @@ window.setProvinceBar = (finished, unfinished) => {
       shadowColor: 'rgba(0,0,0,0.5)'
     }
   }
+  //已完成
+  let data1 = []
+  ssmcList.forEach((ele,index) => {
+    if (finished[index] > ssjhssimple[ele]) {
+      data1.push({
+        name:'完成',
+        value: finished[index],
+        itemStyle: {
+          color: '#EB5757'
+        }
+      })
+    } else {
+      data1.push({
+        name:'完成',
+        value: finished[index],
+        itemStyle: {
+          color: '#2F80ED'
+        }
+      })
+    }
+  })
 
-
-  let serial = []
-  for (let zymc in finished) {
-    serial.push({
-        name: zymc,
-        type: 'bar',
-        stack: 'one',
-        itemStyle: itemStyle,
-        data: finished[zymc]
-    })
+  //已完成
+  let data2 = []
+  ssmcList.forEach((ele,index) => {
+    if(unfinished[index]>0){
+      data2.push({
+        name:'未完成',
+        value: unfinished[index],
+        itemStyle:{
+          color: '#FFFFFF'
+        }
+      })
+    }else{
+      data2.push({
+        name:'超标',
+        value: unfinished[index],
+        itemStyle:{
+          color: '#bdbdbd'
+        },
+        tooltip:{
+          formatter:function(params,tiket,callback){
+            return params.marker + '超标:' + (-params['value'])
+          }
+        }
+      })
+    }
+  })
+ 
+  let series1 = {
+    type: 'bar',
+    stack: 'one',
+    itemStyle: itemStyle,
+    data: data1
   }
 
-  for (let zymc in unfinished) {
-    serial.push({
-        name: zymc,
-        type: 'bar',
-        stack: 'one',
-        itemStyle: unfinishedStyle,
-        data: unfinished[zymc]
-    })
+  let series2 = {
+    type: 'bar',
+    stack: 'one',
+    itemStyle: itemStyle,
+    data: data2
   }
+
+  let series = []
+  series.push(series1)
+  series.push(series2)
+ 
 
   let option = {
     title: {
@@ -152,7 +199,7 @@ window.setProvinceBar = (finished, unfinished) => {
       top: 80,
       bottom: 80
     },
-    series: serial
+    series: series
   }
   right.setOption(option)
 

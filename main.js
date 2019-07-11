@@ -71,12 +71,13 @@ function createMenu() {
     })
   })
   submenu1.push({ type: 'separator' })
-  zymcList.forEach(element => {
+  //将专业名称改为大类专业
+  dlzyList.forEach(element => {
     submenu1.push({
       label: element,
       role: element,
       click: (a, b, c) => {
-        setPie('zydm', zymc2zydm[element], ipc)
+        setPie('dlzy', element, ipc)
       }
     })
   })
@@ -115,7 +116,7 @@ function createMenu() {
     subSubMenu.push({label:college})
   })
 
-  console.log(subSubMenu)
+  
   let submenu4 = []
   let rankType = ['985高校排名', '文史类录取线', '理工类录取线', '文史类录取线超本一线分值', '理工类录取线超本一线分值', '文史类录取线省排名', '理工类录取线省排名']
   rankType.forEach((type) => {
@@ -133,7 +134,6 @@ function createMenu() {
     submenu5.push({
       label:type,
       click: (a, b, c) => {
-        console.log(type)
         setGrade(type, ipc)
       }
     })

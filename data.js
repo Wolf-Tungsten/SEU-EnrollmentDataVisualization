@@ -11,7 +11,7 @@ const zyjhs = require('./predefined-data/zyjhs.json')
 const lbList = require('./predefined-data/drlbdm2lb.json')
 //const history = require('./predefined-data/history.json')
 
-const keyList = ['nf', 'ssmc', 'drlbdm', 'xbmc', 'mzmc', 'klmc', 'cj', 'zydm']
+const keyList = ['nf', 'ssmc', 'drlbdm', 'xbmc', 'mzmc', 'klmc', 'cj', 'zymc']
 let srcData
 let historyData
 const normalizeSSMC = (ssmc) => {
@@ -34,16 +34,18 @@ const loadData = async (path, ipc) => {
         srcData = []
         let tableHeader = orginData[0].data[0]
         orginData[0].data.forEach((row, index, arr) => {
-            if (index !== 0 && row[0] == 2018) { // 只导入2018年
+            if (index !== 0 && row[0] == 2019) { // 只导入2019年
                 let item = {}
                 keyList.forEach(careKey => {
                     item[careKey] = row[tableHeader.indexOf(careKey)]
                 })
                 item.ssmc = normalizeSSMC(item.ssmc) //省市名称规整
-                //console.log(item)
+                console.log("item")
+                console.log(item)
                 srcData.push(item)
             }
         })
+        console.log(srcData)
         //console.log(srcData.length)
         //console.log(srcData[0])
         // 开始初始数据渲染
@@ -62,15 +64,15 @@ const loadData = async (path, ipc) => {
                 let ssmc = normalizeSSMC(row[1])
                 //console.log(ssmc)
                 if (!historyData[ssmc]) {
-                historyData[ssmc] = {
-                    '985高校排名': [],
-                    '文史类录取线': [],
-                    '文史类超本一线分数': [],
-                    '文史类录取线省排名': [],
-                    '理工类录取线': [],
-                    '理工类超本一线分数': [],
-                    '理工类录取线省排名': [],
-                }
+                    historyData[ssmc] = {
+                        '985高校排名': [],
+                        '文史类录取线': [],
+                        '文史类超本一线分数': [],
+                        '文史类录取线省排名': [],
+                        '理工类录取线': [],
+                        '理工类超本一线分数': [],
+                        '理工类录取线省排名': [],
+                    }
                 }
                 let type = ['985高校排名',
                     '文史类录取线',
@@ -158,43 +160,43 @@ const setPie = async (type, key, ipc) => {
                 if (item.xbmc === '男') { xb.male += 1 }
                 if (item.xbmc === '女') { xb.female += 1 }
 
-                if (lbList[''+item.drlbdm] === '普通类') {
+                if (lbList['' + item.drlbdm] === '普通类') {
                     lb.pt += 1
-                } else if (lbList[''+item.drlbdm] === '艺术类') {
+                } else if (lbList['' + item.drlbdm] === '艺术类') {
                     lb.art += 1
-                } else if (lbList[''+item.drlbdm] === '国家专项') {
+                } else if (lbList['' + item.drlbdm] === '国家专项') {
                     lb.gjzx += 1
                 } else { lb.ts += 1 }
 
                 if (item.mzmc.indexOf('汉') >= 0) { mz.hans += 1 } else { mz.noHans += 1 }
             }
         })
-    } else if (type === 'zydm') {
+    } else if (type === 'dlzy') {
         srcData.forEach(item => {
-            if ('' + item.zydm === key) {
+            if ('' + item.zymc === key) {
                 if (item.xbmc === '男') { xb.male += 1 }
                 if (item.xbmc === '女') { xb.female += 1 }
-                if (lbList[''+item.drlbdm] === '普通类') {
+                if (lbList['' + item.drlbdm] === '普通类') {
                     lb.pt += 1
-                } else if (lbList[''+item.drlbdm] === '艺术类') {
+                } else if (lbList['' + item.drlbdm] === '艺术类') {
                     lb.art += 1
-                } else if (lbList[''+item.drlbdm] === '国家专项') {
+                } else if (lbList['' + item.drlbdm] === '国家专项') {
                     lb.gjzx += 1
                 } else { lb.ts += 1 }
                 if (item.mzmc.indexOf('汉') >= 0) { mz.hans += 1 } else { mz.noHans += 1 }
             }
         })
-        key = zydm2zymc[key]
+        //key = zydm2zymc[key]
     } else {
         srcData.forEach(item => {
             if (true) {
                 if (item.xbmc === '男') { xb.male += 1 }
                 if (item.xbmc === '女') { xb.female += 1 }
-                if (lbList[''+item.drlbdm] === '普通类') {
+                if (lbList['' + item.drlbdm] === '普通类') {
                     lb.pt += 1
-                } else if (lbList[''+item.drlbdm] === '艺术类') {
+                } else if (lbList['' + item.drlbdm] === '艺术类') {
                     lb.art += 1
-                } else if (lbList[''+item.drlbdm] === '国家专项') {
+                } else if (lbList['' + item.drlbdm] === '国家专项') {
                     lb.gjzx += 1
                 } else { lb.ts += 1 }
                 if (item.mzmc.indexOf('汉') >= 0) { mz.hans += 1 } else { mz.noHans += 1 }
@@ -325,11 +327,21 @@ const setZYBar = async (ipc) => {
     ipc('set-zy-bar', { finished, unfinished })
 }
 
-const setGrade = async (type,ipc) =>{
+const setGrade = async (type, ipc) => {
+    //type 大类专业名称
+    data = {}
+    ssmcList.forEach(ele => {
+        data[ele] = []
+    })
+    srcData.forEach(item => {
+        if (item['zymc'] === type) {
+            data[item['ssmc']].push(item['cj'])
+        }
 
-    //数据处理
-    data = 0
-    ipc('set-grade',{type,data})
+    })
+    //console.log(type)
+    //console.log(data)
+    ipc('set-grade', { type, data })
 }
 
 module.exports = { loadData, setPie, setMap, setProvinceBar, setZYBar, setHistory, setRank, setGrade }

@@ -44,8 +44,6 @@ ipcRenderer.on('set-rank', (_, message) => {
     toggleBottom ('rightLeft')
 })
 ipcRenderer.on('set-grade',(_,message) =>{
-    console.log(message.type)
-    console.log(message.data)
-    setGrade(message.type)
+    setGrade(message.type,message.data)
     toggleBottom ('rightLeft')
 })

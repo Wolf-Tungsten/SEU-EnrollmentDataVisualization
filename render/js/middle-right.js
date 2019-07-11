@@ -1,9 +1,9 @@
 const middleRight = echarts.init(document.getElementById('middle-right-container'))
 const zymcList = ["文科试验班", "工科试验班", "经济学", "英语", "日语", "数学", "物理", "工力", "机械", "测控与仪器", "材料", "能源", "电气", "电子", "信息", "电子无锡", "信息无锡", "自动化", "计算机", "软件", "人工智能", "网安", "土木", "测绘", "化工", "交运", "环境", "生医类", "生医", "建筑", "城乡规划", "风景园林", "生物工程", "临床医学", "临床5+3", "预防医学", "医学检验", "工程管理", "工商管理", "劳动社…", "工业工程", "动画", "美术", "产品设计"]
-const ssmc = ["北京","天津","河北","山西","内蒙古","辽宁","吉林","黑龙江","上海","江苏","浙江","安徽","福建","江西","山东","河南","湖北","湖南","广东","广西","海南","重庆","四川","贵州","云南","西藏","陕西","甘肃","青海","宁夏","新疆"]
+const ssmc = ["北京", "天津", "河北", "山西", "内蒙古", "辽宁", "吉林", "黑龙江", "上海", "江苏", "浙江", "安徽", "福建", "江西", "山东", "河南", "湖北", "湖南", "广东", "广西", "海南", "重庆", "四川", "贵州", "云南", "西藏", "陕西", "甘肃", "青海", "宁夏", "新疆"]
 window.setZYBar = (finished, unfinished) => {
   middleRight.clear()
-  
+
   //根据大类专业招生计划显示不同的样式
 
   //完成样式
@@ -19,7 +19,7 @@ window.setZYBar = (finished, unfinished) => {
       shadowColor: 'rgba(0,0,0,0)'
     }
   };
-  
+
   //人数未完成的样式
   let unfinishedStyle = {
     normal: {
@@ -33,10 +33,10 @@ window.setZYBar = (finished, unfinished) => {
       shadowColor: 'rgba(0,0,0,0.5)'
     }
   };
-  
+
   //人数超标的样式
   let excessStyle = {
-    normal:{
+    normal: {
       coloe: '#EB5757'
     },
     emphasis: {
@@ -60,13 +60,13 @@ window.setZYBar = (finished, unfinished) => {
   }
 
   for (let ssmc in unfinished) {
-      serial.push({
-        name: ssmc,
-        type: 'bar',
-        stack: 'one',
-        itemStyle: unfinishedStyle,
-        data: unfinished[ssmc]
-      })
+    serial.push({
+      name: ssmc,
+      type: 'bar',
+      stack: 'one',
+      itemStyle: unfinishedStyle,
+      data: unfinished[ssmc]
+    })
   }
 
   let option = {
@@ -300,21 +300,84 @@ window.setRank = (title, data) => {
 }
 
 //大类
-window.setGrade = (type) => {
+window.setGrade = (type, data) => {
+
+
   middleRight.clear()
-  var data = [];
-  var dataCount = 10;
-  var startTime = +new Date();
-  var categories = ssmc;
-  var types = [
-    { name: 'JS Heap', color: '#7b9ce1' },
-    { name: 'Documents', color: '#bd6d6c' },
-    { name: 'Nodes', color: '#75d874' },
-    { name: 'Listeners', color: '#e0bc78' },
-    { name: 'GPU Memory', color: '#dc77dc' },
-    { name: 'GPU', color: '#72b362' }
+
+  let srcData = data
+  let categories = ssmc;
+  let types = [
+    { name: 'MinGrade', color: '#0ce8aa' },
+    { name: 'MaxGrade', color: '#de320b' },
+    { name: 'Grade', color: '#ffe600' }
   ];
 
+  //创建数据
+  let detailData = []
+  let dataShadow = []
+  for (var i = 0; i < ssmc.length; i++) {
+    dataShadow.push(120);
+  }
+  ssmc.forEach((ssmc, index) => {
+    //每个省的成绩
+    let grade = srcData[ssmc]
+    let maxGrade = Math.max.apply(null, grade)  //最大成绩
+    let minGrade = Math.min.apply(null, grade)  //最小成绩
+    let interval = maxGrade - minGrade;
+    grade.forEach(grade => {
+      if (grade === maxGrade) {
+        detailData.push({
+          name: 'maxGrade',
+          value: [
+            index,
+            (maxGrade - minGrade) / interval * 100,
+            (maxGrade - minGrade) / interval * 100 + 1,
+            grade
+          ],
+          itemStyle: {
+            normal: {
+              color: '#f2da1f'
+            }
+          }
+        })
+      } else if (grade === minGrade) {
+        detailData.push({
+          name: 'minGrade',
+          value: [
+            index,
+            (minGrade - minGrade) / interval * 100,
+            (minGrade - minGrade) / interval * 100 + 1,
+            grade
+          ],
+          itemStyle: {
+            normal: {
+              color: '#f2da1f'
+            }
+          }
+        })
+      } else {
+        detailData.push({
+          name: 'Grade',
+          value: [
+            index,
+            (grade - minGrade) / interval * 100,
+            (grade - minGrade) / interval * 100 + 1,
+            grade
+          ],
+          itemStyle: {
+            normal: {
+              color: 'f2da1f'
+            }
+          }
+        })
+      }
+    })
+  })
+
+  console.log(detailData)
+  console.log(dataShadow)
+  /*
   // Generate mock data
   echarts.util.each(categories, function (category, index) {
     var baseTime = startTime;
@@ -340,6 +403,7 @@ window.setGrade = (type) => {
       baseTime += Math.round(Math.random() * 2000);
     }
   });
+  */
 
   function renderItem(params, api) {
     var categoryIndex = api.value(0);
@@ -364,7 +428,7 @@ window.setGrade = (type) => {
         height: - end[1] + start[1],
         width: width
       });
-
+    console.log(width)
 
     return rectShape && {
       type: 'rect',
@@ -377,82 +441,95 @@ window.setGrade = (type) => {
   option = {
     tooltip: {
       formatter: function (params) {
-        return params.marker + params.name + ': ' + params.value[3] + ' ms';
+        return  '成绩: ' + params.value[3];
       }
     },
     title: {
-      text: 'Profile',
+      text: `${type}成绩分布`,
       left: 'center',
-      top: 20,
+      top: 30,
+      textStyle: {
+        color: '#f9f9f9'
+      }
     },
-
     grid: {
-      left: 130,
-      right: 50,
-      top: 100
-    },
-    xAxis: {
-      data: ssmc,
-      name: '省市',
-      silent: false,
-      boundaryGap: true,
-      axisLine: { onZero: true },
-      splitLine: { show: false },
-      splitArea: { show: false },
-      axisLabel :{
-        interval: 0,
-        color: '#ffffff',
-        shadowBlur: 50,
-        shadowColor: 'rgba(255, 255, 255, 0.5)', 
-        fontFamily: 'NotoSansSC-Regular',
-        fontSize: 16,
-        rotate: -45
+        left: 130,
+        right: 50,
+        top: 100
       },
-      axisLine: {
-        lineStyle: {
-          color: '#fff', //坐标轴线颜色
-          shadowBlur: 200,
+      xAxis: {
+        data: ssmc,
+        name: '省市',
+        silent: false,
+        boundaryGap: true,
+        axisLine: { onZero: true },
+        splitLine: { show: false },
+        splitArea: { show: false },
+        axisLabel: {
+          interval: 0,
+          color: '#ffffff',
+          shadowBlur: 50,
           shadowColor: 'rgba(255, 255, 255, 0.5)',
-        }
-      }
-    },
-    yAxis: {
-      min: startTime,
-      scale: true,
-      
-      axisLabel: {
-        formatter: function (val) {
-          return Math.max(0, val - startTime) + ' ms';
+          fontFamily: 'NotoSansSC-Regular',
+          fontSize: 16,
+          rotate: -45
         },
-        fontSize: 18
-      },
-      axisLine: {
-        lineStyle: {
-          color: '#F9F9F9',
-          width: 2,
-          shadowColor: 'rgba(255, 255, 255, 0.5)',
-          shadowBlur: 10,
+        axisLine: {
+          lineStyle: {
+            color: '#fff', //坐标轴线颜色
+            shadowBlur: 200,
+            shadowColor: 'rgba(255, 255, 255, 0.5)',
+          }
         }
+      },
+      yAxis: {
+        scale: true,
+        min: 0,
+        showMaxLabel: true,
+        axisLabel: {
+          fontSize: 18
+        },
+        axisLine: {
+          lineStyle: {
+            color: '#F9F9F9',
+            width: 2,
+            shadowColor: 'rgba(255, 255, 255, 0.5)',
+            shadowBlur: 10,
+          }
+        }
+      },
+      series: [
+
+      /*{
+        type: 'bar',
+        itemStyle: {
+            normal: {color: '#f0f0f0',opacity: 0.8},
+            
+        },
+        barGap:'-100%',
+        width: 20,
+        data: dataShadow,
+        animation: false
       }
-    },
-    series: [{
-      type: 'custom',
-      renderItem: renderItem,
-      itemStyle: {
-        normal: {
-          opacity: 0.8
-        }
-      },
-      encode: {
-        y: [1, 2],
-        x: 0
-      },
-      data: data
-    }]
-  };
+      */,
+        {
+          type: 'custom',
+          renderItem: renderItem,
+          itemStyle: {
+            normal: {
+              opacity: 0.8
+            }
+          },
+          encode: {
+            y: [1, 2],
+            x: 0
+          },
+          data: detailData
+        }]
+    };
 
-  middleRight.setOption(option)
-}
+    middleRight.setOption(option)
+  }
 
-window.setRightAsHistory = (data) => {
-}
+  window.setRightAsHistory = (data) => {
+  }

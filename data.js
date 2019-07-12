@@ -312,6 +312,7 @@ const setCollegeBar = async (ipc) =>{
 
 }
 const setGrade = async (type, ipc) => {
+    console.log(type)
     //type 大类专业名称
     data = {}
     //按照省市
@@ -325,9 +326,40 @@ const setGrade = async (type, ipc) => {
         }
 
     })
-    //console.log(type)
-    //console.log(data)
-    ipc('set-grade', { type, data })
+    
+    //获取省市的最大最小成绩
+    maxGrade = {}
+    minGrade = {}
+
+    ssmcList.forEach(ele =>{
+        maxGrade[ele] = 0
+        minGrade[ele] = 100000
+    })
+
+    srcData.forEach(item =>{
+        //去空格，去中文括号
+        item.ssmc = item.ssmc.split(" ").join("").replace( /[（]/g,"(").replace(/[）]/g,")")
+        if(maxGrade[item.ssmc] < item.cj){
+            maxGrade[item.ssmc] = item.cj
+        }
+        if(minGrade[item.ssmc] > item.cj){
+            minGrade[item.ssmc] = item.cj
+        }
+    })
+    console.log(data)
+    //将最大最小成绩加入到data中
+    ssmcList.forEach(ssmc =>{
+        if(data[ssmc].length !== 0){
+            data[ssmc].push(maxGrade[ssmc])
+            data[ssmc].push(minGrade[ssmc])
+        }
+    })
+    
+
+    //console.log(maxGrade)
+    //console.log(minGrade)
+    console.log(data)
+    ipc('set-grade', { type, data})
 }
 
 module.exports = { loadData, setPie, setMap, setProvinceBar, setZYBar, setHistory, setRank, setGrade,setCollegeBar}

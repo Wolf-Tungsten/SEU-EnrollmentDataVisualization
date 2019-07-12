@@ -276,7 +276,7 @@ let option = {
   xAxis:  {
       type: 'category',
       boundaryGap: false,
-      data: ['2014','2015','2016','2017','2018'],
+      data: ['2015','2016','2017','2018','2019'],
       axisLine: {
         lineStyle:{
           color:'#F9F9F9',

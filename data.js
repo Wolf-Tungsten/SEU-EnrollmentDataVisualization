@@ -88,12 +88,13 @@ const loadData = async (path, ipc) => {
                 })
             }
         })
+        console.log(historyData)
         setHistory('江苏', '985高校排名', ipc)
     }
 }
 
 const setHistory = async (ssmc, type, ipc) => {
-    let title = `${ssmc}${type}近五年(2014-2018)趋势`
+    let title = `${ssmc}${type}近五年(2014-2019)趋势`
     let data = {}
     switch (type) {
         case '985高校排名':

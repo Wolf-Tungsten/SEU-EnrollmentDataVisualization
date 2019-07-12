@@ -215,7 +215,7 @@ window.setRank = (title, data) => {
   middleRight.clear()
   let series = {}
   let renderSeries = []
-  let years = ['2014', '2015', '2016', '2017', '2018']
+  let years = [ '2015', '2016', '2017', '2018','2019']
   years.forEach((year) => {
     series[year] = []
   })

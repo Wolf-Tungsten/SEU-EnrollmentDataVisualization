@@ -43,7 +43,7 @@ const loadData = async (path, ipc) => {
                     item[careKey] = row[tableHeader.indexOf(careKey)]
                 })
                 item.ssmc = normalizeSSMC(item.ssmc) //省市名称规整
-              
+
                 srcData.push(item)
             }
         })
@@ -234,7 +234,66 @@ const setMap = async (drlbmc, ipc) => {
             finishedMap[item.ssmc] = 1
             ownMap[item.ssmc] = 0
         }
+
+        // 应对导入类别文理不明确的问题
+        if (drlbdm == "03" || drlbdm == "04" || drlbdm == "05") {
+            if (item.drlbdm == "03" || item.drlbdm == "04" || item.drlbdm == "05") {
+                finishedMap[item.ssmc] = 1
+                ownMap[item.ssmc] = 0
+            }
+        }
+
+        // 应对艺术导入类别文理不明确的问题
+        if (drlbdm == "03" || drlbdm == "04" || drlbdm == "05") {
+            if (item.drlbdm == "03" || item.drlbdm == "04" || item.drlbdm == "05") {
+                finishedMap[item.ssmc] = 1
+                ownMap[item.ssmc] = 0
+            }
+        }
+
+        // 应对预科导入类别文理不明确的问题
+        if (drlbdm == "16" || drlbdm == "23") {
+            if (item.drlbdm == "16" || item.drlbdm == "23") {
+                finishedMap[item.ssmc] = 1
+                ownMap[item.ssmc] = 0
+            }
+        }
+
+        // 应对艺术团导入类别文理不明确的问题
+        if (drlbdm == "11" || drlbdm == "12") {
+            if (item.drlbdm == "11" || item.drlbdm == "12") {
+                finishedMap[item.ssmc] = 1
+                ownMap[item.ssmc] = 0
+            }
+        }
+
+        // 应对运动队导入类别文理不明确的问题
+        if (drlbdm == "13" || drlbdm == "14") {
+            if (item.drlbdm == "13" || item.drlbdm == "14") {
+                finishedMap[item.ssmc] = 1
+                ownMap[item.ssmc] = 0
+            }
+        }
+
+        if (drlbdm == "06" || drlbdm == "07") {
+            if (item.drlbdm == "06" || item.drlbdm == "07") {
+                finishedMap[item.ssmc] = 1
+                ownMap[item.ssmc] = 0
+            }
+        }
+
+        if (drlbdm == "08" || drlbdm == "09") {
+            if (item.drlbdm == "08" || item.drlbdm == "09") {
+                finishedMap[item.ssmc] = 1
+                ownMap[item.ssmc] = 0
+            }
+        }
+
+
+
     })
+
+
 
 
     let own = []
@@ -246,6 +305,7 @@ const setMap = async (drlbmc, ipc) => {
     for (let ssmc in finishedMap) {
         if (finishedMap[ssmc]) { finished.push(ssmc) }
     }
+
 
     //console.log('包含该计划但未完成的省市', own)
     //console.log('已完成该计划的省市',finished)
@@ -263,8 +323,8 @@ const setProvinceBar = async (ipc) => {
             //根据省份，和导入代码进行过滤
             return (item.ssmc === ssmc && drlbdm2lb[item.drlbdm] === "普通类")
         }).length
-        
-        let unfinishedCount = amount - count 
+
+        let unfinishedCount = amount - count
         finished['已完成'].push(count)
         unfinished['未完成'].push(unfinishedCount)
     })
@@ -280,17 +340,17 @@ const setZYBar = async (ipc) => {
         if (zymc.indexOf('预科班') === -1) {
             let amount = zyjhs[zymc]['amount']
             let finishedCount = srcData.filter((item, index, array) => {
-                item.zymc = item.zymc.split(" ").join("").replace( /[（]/g,"(").replace(/[）]/g,")")
+                item.zymc = item.zymc.split(" ").join("").replace(/[（]/g, "(").replace(/[）]/g, ")")
                 return item.zymc === zymc && drlbdm2lb[item.drlbdm] === "普通类"
             }).length
-            let unfinishedCount = amount - finishedCount 
+            let unfinishedCount = amount - finishedCount
             finished['已完成'].push(finishedCount)
             unfinished['未完成'].push(unfinishedCount)
         }
     })
     ipc('set-zy-bar', { finished, unfinished })
 }
-const setCollegeBar = async (ipc) =>{
+const setCollegeBar = async (ipc) => {
     let unfinished = { '未完成': [] }
     let finished = { '已完成': [] }
 
@@ -298,16 +358,16 @@ const setCollegeBar = async (ipc) =>{
         let amount = xyjhs[college]
         //console.log(college)
         //console.log(amount)
-        let finishedCount = srcData.filter((item,index,array)=>{
+        let finishedCount = srcData.filter((item, index, array) => {
             return item.yxmc === college
         }).length
         console.log(finishedCount)
 
-        let unfinishedCount = amount - finishedCount  
+        let unfinishedCount = amount - finishedCount
         finished['已完成'].push(finishedCount)
         unfinished['未完成'].push(unfinishedCount)
     })
-    
+
     ipc('set-college-bar', { finished, unfinished })
 
 }
@@ -321,63 +381,63 @@ const setGrade = async (type, ipc) => {
     })
     srcData.forEach(item => {
         //表中数据zymc有空格和中文括号
-        if (item['zymc'].split(" ").join("").replace( /[（]/g,"(").replace(/[）]/g,")") === type) {
+        if (item['zymc'].split(" ").join("").replace(/[（]/g, "(").replace(/[）]/g, ")") === type) {
             data[item['ssmc']].push(item['cj'])
         }
 
     })
-    
+
     //获取省市的最大最小成绩
     maxGrade = {}
     minGrade = {}
 
-    ssmcList.forEach(ele =>{
+    ssmcList.forEach(ele => {
         maxGrade[ele] = 0
         minGrade[ele] = 100000
     })
 
-    srcData.forEach(item =>{
+    srcData.forEach(item => {
         //去空格，去中文括号
-        item.ssmc = item.ssmc.split(" ").join("").replace( /[（]/g,"(").replace(/[）]/g,")")
-        if(maxGrade[item.ssmc] < item.cj){
+        item.ssmc = item.ssmc.split(" ").join("").replace(/[（]/g, "(").replace(/[）]/g, ")")
+        if (maxGrade[item.ssmc] < item.cj) {
             maxGrade[item.ssmc] = item.cj
         }
-        if(minGrade[item.ssmc] > item.cj){
+        if (minGrade[item.ssmc] > item.cj) {
             minGrade[item.ssmc] = item.cj
         }
     })
 
 
     let meanGarde = {}
-    ssmcList.forEach(ssmc =>{
-        if(data[ssmc].length !== 0){
+    ssmcList.forEach(ssmc => {
+        if (data[ssmc].length !== 0) {
             let amount = 0
-            data[ssmc].forEach(grade =>{
+            data[ssmc].forEach(grade => {
                 amount = amount + grade
             })
-            meanGarde[ssmc] = amount /  data[ssmc].length
+            meanGarde[ssmc] = amount / data[ssmc].length
         }
-        else{
+        else {
             meanGarde[ssmc] = 0
         }
-    }) 
+    })
 
     //onsole.log(meanGarde)
     //console.log(data)
     //将最大最小成绩加入到data中
-    ssmcList.forEach(ssmc =>{
-        if(data[ssmc].length !== 0){
+    ssmcList.forEach(ssmc => {
+        if (data[ssmc].length !== 0) {
             data[ssmc].push(maxGrade[ssmc])
             data[ssmc].push(minGrade[ssmc])
         }
     })
-    
+
 
     //console.log(maxGrade)
     //console.log(minGrade)
     //console.log(data)
-    ipc('set-grade', { type, data, meanGarde})
+    ipc('set-grade', { type, data, meanGarde })
 }
 
-module.exports = { loadData, setPie, setMap, setProvinceBar, setZYBar, setHistory, setRank, setGrade,setCollegeBar}
+module.exports = { loadData, setPie, setMap, setProvinceBar, setZYBar, setHistory, setRank, setGrade, setCollegeBar }
 

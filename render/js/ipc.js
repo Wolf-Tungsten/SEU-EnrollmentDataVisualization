@@ -11,12 +11,14 @@ AutomaticSwitching = function(_,message){
     console.log('开启自动切换')
     isAutomaticSwitching = true
     let i = 1
+    console.log(i++)
+    ipcRenderer.send('AutomaticSwitching',i)
     setInterval(function(){
         if(isAutomaticSwitching){
             console.log(i++)
             ipcRenderer.send('AutomaticSwitching',i)
         }
-    },3000)
+    },60000)
 }
 
 ipcRenderer.on('set-scale', (_, message) => {

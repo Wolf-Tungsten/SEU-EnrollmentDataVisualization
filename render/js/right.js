@@ -297,6 +297,7 @@ let option = {
           fontSize: 18
       },
       scale:true,
+      inverse:title.indexOf('排名') !== -1,
       axisLine: {
         lineStyle:{
           color:'#F9F9F9',

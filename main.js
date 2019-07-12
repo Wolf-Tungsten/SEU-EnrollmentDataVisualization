@@ -194,7 +194,7 @@ function createMenu() {
         role: '打开自动切换',
         click: (a,b,c) => {
           console.log('自动切换')
-          displayWindow.webContents.send("Turn-on-automatic-switching",null)
+          //displayWindow.webContents.send("Turn-on-automatic-switching",null)
           monitorWindow.webContents.send("Turn-on-automatic-switching",null)
         }
 
@@ -203,7 +203,7 @@ function createMenu() {
         role: '关闭自动切换',
         click:  (a,b,c) => {
           console.log('关闭切换')
-          displayWindow.webContents.send("Turn-off-automatic-switching",null)
+          //displayWindow.webContents.send("Turn-off-automatic-switching",null)
           monitorWindow.webContents.send("Turn-off-automatic-switching",null)
         }
       }]
@@ -254,7 +254,15 @@ app.on('activate', function () {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
-
-ipcMain.on('AutomaticSwitchin',(_,message)=>{
-   console.log(message.i)
+const important = [()=>{setProvinceBar(ipc)}, ()=>{setZYBar(ipc)},()=>{setCollegeBar(ipc)}]
+let messageMain = 0
+ipcMain.on('AutomaticSwitching',(_,message)=>{
+  if(message % 3 === 0){
+     setProvinceBar(ipc)
+  }else if(message % 3 === 1 ){
+     setZYBar(ipc)
+  }else if(message % 3 === 2){
+     setCollegeBar(ipc)
+  }
 })
+

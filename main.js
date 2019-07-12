@@ -144,8 +144,8 @@ function createMenu() {
     })
   })
 
-
-  let submenu6 = []
+ 
+  
   const template = [
     {
       label: '环状图切片',
@@ -186,6 +186,27 @@ function createMenu() {
     {
       label: '成绩分布视图',
       submenu: submenu5
+    },
+    {
+      label: '自动切换',
+      submenu: [{
+        label: '打开自动切换',
+        role: '打开自动切换',
+        click: (a,b,c) => {
+          console.log('自动切换')
+          displayWindow.webContents.send("Turn-on-automatic-switching",null)
+          monitorWindow.webContents.send("Turn-on-automatic-switching",null)
+        }
+
+      },{
+        label: '关闭自动切换',
+        role: '关闭自动切换',
+        click:  (a,b,c) => {
+          console.log('关闭切换')
+          displayWindow.webContents.send("Turn-off-automatic-switching",null)
+          monitorWindow.webContents.send("Turn-off-automatic-switching",null)
+        }
+      }]
     },
   ]
 

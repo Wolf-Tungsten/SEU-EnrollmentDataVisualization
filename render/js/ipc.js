@@ -1,5 +1,13 @@
 const {ipcRenderer} = require('electron')
 
+AutomaticSwitching = function(_,message){
+    console.log('开启自动切换')
+    let i = 0
+    while(1){
+        console.log(i++)
+    }
+}
+
 ipcRenderer.on('set-scale', (_, message) => {
     let scale = message
     console.log(scale)
@@ -26,7 +34,7 @@ ipcRenderer.on('set-map', (_, message)=>{
 
 ipcRenderer.on('set-province-bar', (_, message)=>{
     setProvinceBar(message.finished, message.unfinished)
-    toggleBottom ('rigthMiddleLeft')
+    toggleBottom ('rightLeft')
 })
 
 ipcRenderer.on('set-zy-bar', (_, message)=>{
@@ -52,3 +60,11 @@ ipcRenderer.on('set-grade',(_,message) =>{
     setGrade(message.type,message.data)
     toggleBottom ('rightLeft')
 })
+ipcRenderer.on('Turn-on-automatic-switching',AutomaticSwitching)
+
+
+ipcRenderer.on('Turn-off-automatic-switching',(_,message)=>{
+    ipcRenderer.removeListener('Turn-on-automatic-switching',AutomaticSwitching)
+    console.log('guanbi')
+})
+

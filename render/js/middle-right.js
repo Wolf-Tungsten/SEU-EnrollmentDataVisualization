@@ -362,9 +362,9 @@ window.setRank = (title, data) => {
 }
 
 //大类
-window.setGrade = (type, data) => {
+window.setGrade = (type, data, meanGrade) => {
 
-  console.log(type)
+  console.log(meanGrade)
   middleRight.clear()
 
   let srcData = data
@@ -384,6 +384,23 @@ window.setGrade = (type, data) => {
     let maxGrade = Math.max.apply(null, grade)  //最大成绩
     let minGrade = Math.min.apply(null, grade)  //最小成绩
     let interval = maxGrade - minGrade;
+    //增加一个成绩平均值
+    
+    detailData.push({
+      name:'平均成绩',
+      value:[
+        index,
+        (meanGrade[ssmc] - minGrade) / interval * 100,
+        (meanGrade[ssmc] - minGrade) / interval * 100 + 1,
+        meanGrade[ssmc]
+      ],
+      itemStyle: {
+        normal: {
+          color: '#ff0000'
+        },
+        z:10
+      }
+    })
     grade.forEach(grade => {
       if (grade === maxGrade) {
         detailData.push({
@@ -514,10 +531,15 @@ window.setGrade = (type, data) => {
     },
     yAxis: {
       scale: true,
+      interval: 50,
       min: 0,
-      showMaxLabel: true,
+      showMaxLabel: false,
       axisLabel: {
-        fontSize: 18
+        fontSize: 18,
+        formatter: function(value, index){
+          if(value === 0) return '最低成绩'
+          if(value === 100) return '最高成绩'
+        }
       },
       axisLine: {
         lineStyle: {

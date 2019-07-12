@@ -94,7 +94,7 @@ const loadData = async (path, ipc) => {
 }
 
 const setHistory = async (ssmc, type, ipc) => {
-    let title = `${ssmc}${type}近五年(2014-2019)趋势`
+    let title = `${ssmc}${type}近五年(2015-2019)趋势`
     let data = {}
     switch (type) {
         case '985高校排名':
@@ -346,7 +346,24 @@ const setGrade = async (type, ipc) => {
             minGrade[item.ssmc] = item.cj
         }
     })
-    console.log(data)
+
+
+    let meanGarde = {}
+    ssmcList.forEach(ssmc =>{
+        if(data[ssmc].length !== 0){
+            let amount = 0
+            data[ssmc].forEach(grade =>{
+                amount = amount + grade
+            })
+            meanGarde[ssmc] = amount /  data[ssmc].length
+        }
+        else{
+            meanGarde[ssmc] = 0
+        }
+    }) 
+
+    //onsole.log(meanGarde)
+    //console.log(data)
     //将最大最小成绩加入到data中
     ssmcList.forEach(ssmc =>{
         if(data[ssmc].length !== 0){
@@ -358,8 +375,8 @@ const setGrade = async (type, ipc) => {
 
     //console.log(maxGrade)
     //console.log(minGrade)
-    console.log(data)
-    ipc('set-grade', { type, data})
+    //console.log(data)
+    ipc('set-grade', { type, data, meanGarde})
 }
 
 module.exports = { loadData, setPie, setMap, setProvinceBar, setZYBar, setHistory, setRank, setGrade,setCollegeBar}

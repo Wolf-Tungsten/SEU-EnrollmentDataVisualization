@@ -1,11 +1,13 @@
 const {ipcRenderer} = require('electron')
 
+const is
+
 AutomaticSwitching = function(_,message){
     console.log('开启自动切换')
     let i = 0
-    while(1){
-        console.log(i++)
-    }
+    setInterval(function(){
+
+    },30000)
 }
 
 ipcRenderer.on('set-scale', (_, message) => {
@@ -57,7 +59,7 @@ ipcRenderer.on('set-rank', (_, message) => {
     toggleBottom ('rightLeft')
 })
 ipcRenderer.on('set-grade',(_,message) =>{
-    setGrade(message.type,message.data)
+    setGrade(message.type,message.data,message.meanGarde)
     toggleBottom ('rightLeft')
 })
 ipcRenderer.on('Turn-on-automatic-switching',AutomaticSwitching)

@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/Wolf-Tungsten/SEU-EnrollmentDataVisualization#readme",
   "devDependencies": {
-    "electron": "^2.0.0"
+    "electron": "^9.4.0"
   },
   "dependencies": {
     "electron-reload": "^1.2.5",
